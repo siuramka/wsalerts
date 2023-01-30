@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+  <style>
+    body {
+      background-color: transparent;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    const socket = io("http://localhost:3331");
+
+    socket.on("data", function (data) {
+      const audioUrl = data;
+      var audioApi = new Audio(audioUrl);
+      audioApi.play();
+      console.log("playing")
+    });
+  </script>
+</body>
+
+</html>

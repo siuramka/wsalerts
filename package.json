@@ -1,0 +1,18 @@
+{
+  "name": "nidasalerts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "wsServer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "events": "^3.3.0",
+    "express": "^4.18.2",
+    "socket.io": "^4.5.4",
+    "tmi.js": "^1.8.5"
+  }
+}
