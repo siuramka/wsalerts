@@ -3,6 +3,7 @@ const app = express();
 const server = require("http").createServer(app);
 const eventEmitter = require("./twitch/twitchClient");
 const config = require("./configs/config")
+const tts = require("./tts/tts")
 const PORT = config.PORT;
 const io = require("socket.io")(server, {
   cors: {
@@ -16,7 +17,7 @@ app.get("/", (req, res) => {
 });
 
 eventEmitter.on('botMessage', message => {
-  getAudioUrl(message).then((resp) => {
+  tts.getAudioUrl(message).then((resp) => {
     console.log(resp)
     eventEmitter.emit("sendAudioUrl", resp.speak_url);
   })
@@ -25,18 +26,6 @@ eventEmitter.on('botMessage', message => {
     console.error(resp.json())
   })
 });
-
-async function getAudioUrl(message) {
-  const response = await fetch("https://us-central1-sunlit-context-217400.cloudfunctions.net/streamlabs-tts", {
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    method: 'POST',
-    body: JSON.stringify({ text: message, voice: "Brian" })
-  });
-  return response.json()
-}
 
 io.on("connection", function (socket) {
   console.log("socket.io connnected...")
