@@ -30,10 +30,10 @@ client.connect();
 */
 
 client.on("chat", (channel, user, message, self) => {
-  if (user.username === CHANNEL) {
+  if (user.username === USERNAME_OAUTH) {
     console.log(`${user.username}: ${message}`);
     eventEmitter.emit("botMessage", message);
   }
 });
 
-module.exports = eventEmitter;
+module.exports = {eventEmitter}

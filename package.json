@@ -4,7 +4,7 @@
   "description": "",
   "main": "wsServer.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
@@ -14,5 +14,8 @@
     "express": "^4.18.2",
     "socket.io": "^4.5.4",
     "tmi.js": "^1.8.5"
+  },
+  "devDependencies": {
+    "jest": "^29.4.1"
   }
 }
