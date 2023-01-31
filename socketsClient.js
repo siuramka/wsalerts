@@ -5,8 +5,6 @@ const config = require("./configs/config")
 const tts = require("./tts/tts")
 const PORT = config.PORT;
 const voices = require("./configs/voices");
-const { stat } = require("fs");
-
 const io = require("socket.io")(server, {
   cors: {
     origin: "*",

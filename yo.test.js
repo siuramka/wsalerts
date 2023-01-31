@@ -17,7 +17,7 @@ const options = {
         username: USERNAME_OAUTH,
         password: OAUTH
     },
-    channels: [CHANNEL]
+    channels: ["nidas"]
 };
 
 
@@ -29,7 +29,7 @@ describe('tmi.js send and read message in chat', () => {
 
     test('send and read message in chat', done => {
         client.connect().then(() => {
-            const message = "Doris.said. YYAYAYAYAY YAYAY LIL YATTY G UNIT 7777777"
+            const message = "this is awesome"
             client.say(CHANNEL, message);
 
             client.on('message', (channel, tags, messagee, self) => {
