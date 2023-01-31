@@ -1,10 +1,11 @@
 const app = require("./expressServer")
 const server = require("http").createServer(app);
-const {eventEmitter} = require("./twitch/twitchClient");
+const { eventEmitter } = require("./twitch/twitchClient");
 const config = require("./configs/config")
 const tts = require("./tts/tts")
 const PORT = config.PORT;
-const voices = require("./configs/voices")
+const voices = require("./configs/voices");
+const { stat } = require("fs");
 
 const io = require("socket.io")(server, {
   cors: {
@@ -14,37 +15,45 @@ const io = require("socket.io")(server, {
 });
 
 function getRandomVoice() {
-  return voices.voiceList[(Math.random() * voices.voice.length) | 0];
+  return voices.voiceList[(Math.random() * voices.voiceList.length) | 0];
+}
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function getDataPath(message, voice) {
-  return new Promise((resolve, reject) => {
-    tts.generateSpeech(message, voice)
-      .then(response => {
-        const uuid = response.uuid
-        async function retry() {
-          const data = await tts.getSpeakStatus(uuid)
-          if (!data || data.path === "") {
-            setTimeout(retry, 500);
-          } else {
-            resolve(data.path);
-          }
-        }
-        // make initial GET request
-        retry();
-      })
-      .catch(error => {
-        reject(error);
-      });
-  });
+async function getDataPathPromise(message, voice) {
+  try {
+    const data = await tts.generateSpeech(message, voice)
+    if (data == null) {
+      return null;
+    }
+    await sleep(1000)
+
+    let status = await tts.getSpeakStatus(data.uuid)
+
+    while (status.path == null) {
+      console.log("Synthesizing...")
+      await sleep(1000)
+      status = await tts.getSpeakStatus(data.uuid)
+    }
+    return status.path
+  } catch (error) {
+    console.log('Error in getting audio path => ')
+    console.log(error)
+    return null
+  }
+
 }
 
-eventEmitter.on('botMessage', message => {
-  getDataPath("test test test test test", "eminem").then(r => { console.log("DONE")
-  eventEmitter.emit("sendAudioUrl", r);
-
-}).catch(e => console.error("LOL"))
-});
+eventEmitter.on('botMessage', async (message) => {
+  const voice = getRandomVoice()
+  const audioPath = await getDataPathPromise(message, voice)
+  if(audioPath){
+    console.log(`Synthesized "${message}" with voice "${voice}"`)
+  }
+  eventEmitter.emit("sendAudioUrl", audioPath);
+  
+})
 
 io.on("connection", function (socket) {
   console.log("socket.io connnected...")
