@@ -16,12 +16,14 @@ async function getAudioUrlStreamlabs(message) {
 }
 
 async function generateSpeech(message, voice) {
+  console.log(API_KEY)
+console.log(API_SECRET)
   const endpoint = "https://api.uberduck.ai/speak"
   const response = await fetch(endpoint, {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'Authorization': 'Basic ' + Buffer.from(API_KEY + ":" + API_SECRET).toString('base64')
+      'Authorization': "Basic " + Buffer.from(API_KEY+":"+API_SECRET).toString('base64')
     },
     method: 'POST',
     body: JSON.stringify({ speech: message, voice: voice })
@@ -30,12 +32,14 @@ async function generateSpeech(message, voice) {
 }
 
 async function getSpeakStatus(uuid) {
+  console.log(API_KEY)
+console.log(API_SECRET)
   const endpoint = `https://api.uberduck.ai/speak-status?uuid=${uuid}`
   const response = await fetch(endpoint, {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'Authorization': 'Basic ' + Buffer.from(API_KEY + ":" + API_SECRET).toString('base64')
+      'Authorization': "Basic " + Buffer.from(API_KEY+":"+API_SECRET).toString('base64')
     },
     method: 'GET'
   });

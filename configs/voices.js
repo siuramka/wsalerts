@@ -1,4 +1,4 @@
-export const voices = [
+exports.voiceList = [
     'Drake',
     'Kanye West (rapping)',
     'Snoop Dogg',

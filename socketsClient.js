@@ -1,10 +1,10 @@
 const app = require("./expressServer")
 const server = require("http").createServer(app);
-const eventEmitter = require("./twitch/twitchClient");
+const {eventEmitter} = require("./twitch/twitchClient");
 const config = require("./configs/config")
 const tts = require("./tts/tts")
 const PORT = config.PORT;
-const { voices } = require("./configs/voices")
+const voices = require("./configs/voices")
 
 const io = require("socket.io")(server, {
   cors: {
@@ -14,18 +14,36 @@ const io = require("socket.io")(server, {
 });
 
 function getRandomVoice() {
-  return voices[(Math.random() * voices.length) | 0];
+  return voices.voiceList[(Math.random() * voices.voice.length) | 0];
+}
+
+function getDataPath(message, voice) {
+  return new Promise((resolve, reject) => {
+    tts.generateSpeech(message, voice)
+      .then(response => {
+        const uuid = response.uuid
+        async function retry() {
+          const data = await tts.getSpeakStatus(uuid)
+          if (!data || data.path === "") {
+            setTimeout(retry, 500);
+          } else {
+            resolve(data.path);
+          }
+        }
+        // make initial GET request
+        retry();
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
 }
 
 eventEmitter.on('botMessage', message => {
-  tts.getAudioUrl(message).then((resp) => {
-    console.log(resp)
-    eventEmitter.emit("sendAudioUrl", resp.speak_url);
-  })
-  .catch((resp) =>{
-    console.error("Error fetching TTS API!")
-    console.error(resp.json())
-  })
+  getDataPath("test test test test test", "eminem").then(r => { console.log("DONE")
+  eventEmitter.emit("sendAudioUrl", r);
+
+}).catch(e => console.error("LOL"))
 });
 
 io.on("connection", function (socket) {

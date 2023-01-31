@@ -2,7 +2,7 @@
   "name": "nidasalerts",
   "version": "1.0.0",
   "description": "",
-  "main": "wsServer.js",
+  "main": "socketsClient.js",
   "scripts": {
     "test": "jest"
   },
