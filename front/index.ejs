@@ -12,7 +12,8 @@
 
 <body>
   <script>
-    const socket = io("http://localhost:3331");
+    const port = '<%= port %>'
+    const socket = io(`http://localhost:${port}`);
 
     socket.on("data", function (data) {
       const audioUrl = data;

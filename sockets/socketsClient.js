@@ -1,5 +1,5 @@
 const app = require("../expressServer")
-const server = require("http").createServer(app);
+const server = require("http").createServer(app.app);
 const events = require("../events/eventsHandler")
 const config = require("../configs/config")
 const tts = require("../tts/tts")
@@ -60,6 +60,7 @@ io.on("connection", function (socket) {
     socket.emit("data", audioLink);
   });
 });
+
 
 server.listen(PORT, function () {
   console.log("Running on *: " + PORT);
