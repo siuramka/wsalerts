@@ -49,8 +49,8 @@ events.eventEmitter.on('synthesizeAudio', async (message, voice) => {
   const audioPath = await getSynthesizedAudioUrl(message, voiceData)
   if(audioPath){
     console.log(`Synthesized "${message}" with voice "${voiceData}"`)
+    events.eventEmitter.emit("sendAudioUrl", audioPath);
   }
-  events.eventEmitter.emit("sendAudioUrl", audioPath);
   
 })
 
