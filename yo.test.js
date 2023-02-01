@@ -5,7 +5,6 @@ const config = require("./configs/config");
 const OAUTH = config.OAUTH;
 const USERNAME_OAUTH = config.USERNAME_OAUTH;
 const CHANNEL = config.CHANNEL;
-console.log(OAUTH)
 const options = {
     options: {
         debug: true
@@ -17,7 +16,7 @@ const options = {
         username: USERNAME_OAUTH,
         password: OAUTH
     },
-    channels: ["nidas"]
+    channels: [CHANNEL]
 };
 
 
