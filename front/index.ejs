@@ -13,7 +13,7 @@
 <body>
   <script>
     const port = '<%= port %>'
-    const socket = io(`http://localhost:${port}`);
+    const socket = io(`https://tts.nidas.tv`);
 
     socket.on("data", function (data) {
       const audioUrl = data;
