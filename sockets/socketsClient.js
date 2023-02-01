@@ -43,13 +43,12 @@ async function getSynthesizedAudioUrl(message, voice) {
 
 }
 
-events.eventEmitter.on('synthesizeAudio', async (message) => {
+events.eventEmitter.on('synthesizeAudio', async (message, voice) => {
   console.log(`Got synthesize request "${message}"!`)
-
-  const voice = getRandomVoice()
-  const audioPath = await getSynthesizedAudioUrl(message, voice)
+  let voiceData = voice || getRandomVoice();
+  const audioPath = await getSynthesizedAudioUrl(message, voiceData)
   if(audioPath){
-    console.log(`Synthesized "${message}" with voice "${voice}"`)
+    console.log(`Synthesized "${message}" with voice "${voiceData}"`)
   }
   events.eventEmitter.emit("sendAudioUrl", audioPath);
   
