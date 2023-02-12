@@ -12,20 +12,15 @@
 
 <body>
   <script>
-    const socket = io(`http://localhost:3331`);
+    const port = '3331'
+//    const socket = io(`http://localhost:${port}`);
+    const socket = io(`https://cloud.nidas.tv/tts`);
 
     socket.on("data", function (data) {
       const audioUrl = data;
       var audioApi = new Audio(audioUrl);
       audioApi.play();
       console.log("playing")
-    });
-
-    socket.on('audio_blob', (response) => {
-      console.log(response)
-      const audioApi = new Audio(response);
-      audioApi.play();
-      console.log("playing blob")
     });
   </script>
 </body>

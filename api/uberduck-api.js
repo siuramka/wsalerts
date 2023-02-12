@@ -11,18 +11,12 @@ const apiHeaders = {
   'Authorization': apiCredentials
 }
 
-// async function getAudioUrlStreamlabs(message) {
-//   const response = await axios("https://us-central1-sunlit-context-217400.cloudfunctions.net/streamlabs-tts", {
-//     headers: {
-//       'Accept': 'application/json',
-//       'Content-Type': 'application/json'
-//     },
-//     method: 'POST',
-//     body: JSON.stringify({ text: message, voice: "Brian" })
-//   });
-//   return response.data.json()
-// }
-
+/**
+ * Synthezation request
+ * @param {string} message - message for synthezation
+ * @param {string} voice - voice for synthezation
+ * @returns 
+ */
 async function generateSpeech(message, voice) {
   const endpoint = "https://api.uberduck.ai/speak"
   const response = await axios.post(endpoint, { speech: message, voice: voice }, { headers: apiHeaders });
@@ -31,6 +25,7 @@ async function generateSpeech(message, voice) {
   }
   return response.data
 }
+
 
 async function getSpeakStatus(uuid) {
   const endpoint = `https://api.uberduck.ai/speak-status?uuid=${uuid}`

@@ -6,6 +6,7 @@ module.exports = {
     CHANNEL: process.env.CHANNEL,
     API_KEY: process.env.API_KEY,
     API_SECRET: process.env.API_SECRET,
+    XI_API_KEY: process.env.XI_API_KEY,
     //Users authorised for commands
     AUTHORIZED_USERS : ["mariuspure", "nidas", "senlash"]
 }

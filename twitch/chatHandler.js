@@ -36,6 +36,11 @@ tmi.client.on("chat", (channel, user, message, self) => {
       const messageInfo = commandHandler.parseChatCommandMessageTtsv(user, message)
       commandHandler.handleCommandTtsv(messageInfo)
     }
+    if(commandName == "!tts11" && isUserAuthorized) {
+      const messageInfo = commandHandler.parseChatCommandMessageTts(user, message)
+      commandHandler.handleCommandTts11(messageInfo)
+
+    }
   } catch (error) {
     console.log(`Error in chat parsing! => `)
     console.log(error)

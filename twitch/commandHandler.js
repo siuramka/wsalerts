@@ -11,6 +11,11 @@ function handleCommandTtsv(messageInfo) {
     events.eventEmitter.emit("synthesizeAudio", synthMessage, voice);
 }
 
+function handleCommandTts11(messageInfo) {
+    const synthMessage = `${messageInfo.username} said. ${messageInfo.messageContent}`
+    events.eventEmitter.emit("synthesizeAudio11", synthMessage);
+}
+
 function parseChatCommandMessageTts(user, message) {
     const messageContent = message.replace("!tts ","")
     const username = user.username
@@ -26,5 +31,5 @@ function parseChatCommandMessageTtsv(user, message) {
 }
 
 module.exports = {
-    parseChatCommandMessageTts, parseChatCommandMessageTtsv, handleCommandTts, handleCommandTtsv
+    handleCommandTts11, parseChatCommandMessageTts, parseChatCommandMessageTtsv, handleCommandTts, handleCommandTtsv
 }
