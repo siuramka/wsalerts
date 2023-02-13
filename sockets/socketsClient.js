@@ -1,5 +1,5 @@
-const app = require("../expressServer")
-const server = require("http").createServer(app.app);
+const {app} = require("../expressServer")
+const server = require("http").createServer(app);
 const {eventEmitter} = require("../events/eventsHandler")
 const config = require("../configs/config")
 const PORT = config.PORT;

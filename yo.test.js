@@ -1,7 +1,8 @@
 const tmi = require("tmi.js");
 const cmd = require("./twitch/commandHandler")
 const config = require("./configs/config");
-const { generateSpeech } = require("./api/11labs-api")
+const elevenlabas = require("./api/elevenlabs-api")
+const helpers = require("./tts/helpers")
 
 const OAUTH = config.OAUTH;
 const USERNAME_OAUTH = config.USERNAME_OAUTH;
@@ -20,10 +21,13 @@ const options = {
     channels: [CHANNEL]
 };
 
-test('11labs api synth test', async () => {
-    const data = await generateSpeech("message message yo","21m00Tcm4TlvDq8ikWAM").then((d) => console.log(d))
-    console.log("data" + data)
+test('getVoiceIdFromVoiceName', async () => {
+    const data = await helpers.getVoiceIdFromVoiceName("nidas").then(d => console.log(d))
 });
+// test('11labs api synth test', async () => {
+//     const data = await generateSpeech("message message yo","21m00Tcm4TlvDq8ikWAM").then((d) => console.log(d))
+//     console.log("data" + data)
+// });
 
 // test('testparseChatCommandMessageTtsv', () => {
 //     const data = cmd.parseChatCommandMessageTtsv("", "!ttsv 21-savage I just did what?? JUST RAPPED YO")

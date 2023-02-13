@@ -1,11 +1,12 @@
 const uberduck = require("../api/uberduck-api")
 const elevenlabs = require("../api/elevenlabs-api")
-const { sleep, getRandomVoice } = require("../tts/helpers")
+const { sleep, getRandomVoiceUberduck, getRandomVoiceElevenlabs} = require("../tts/helpers")
 
 
 async function getSynthesizedAudioBase64(message, voice) {
     try {
         const audioBlob = await elevenlabs.generateSpeechData(message, voice)
+        console.log("Synthesizing...")
         if (audioBlob) //necessary check or no?
             return audioBlob
     } catch (error) {

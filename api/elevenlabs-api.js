@@ -17,7 +17,7 @@ async function getUserVoices() {
         throw new Error(`${url} /voices Error ${response.status}`)
     }
 
-    return response.data.json()
+    return response.data
 }
 
 async function generateSpeechData(message, voice) {
@@ -32,5 +32,5 @@ async function generateSpeechData(message, voice) {
     return audioData
 }
 module.exports = {
-    generateSpeechData
+    generateSpeechData, getUserVoices
 }
