@@ -12,20 +12,13 @@
 
 <body>
   <script>
-    const socket = io(`http://localhost:3331`);
+    const socket = io();
 
-    socket.on("data", function (data) {
+    socket.on("data", (data) => {
       const audioUrl = data;
-      var audioApi = new Audio(audioUrl);
+      const audioApi = new Audio(audioUrl);
       audioApi.play();
       console.log("playing")
-    });
-
-    socket.on('audio_blob', (response) => {
-      console.log(response)
-      const audioApi = new Audio(response);
-      audioApi.play();
-      console.log("playing blob")
     });
   </script>
 </body>

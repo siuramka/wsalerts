@@ -14,14 +14,14 @@ const apiHeaders = {
 /**
  * Synthezation request
  * @param {string} message - message for synthezation
- * @param {string} voice - voice for synthezation
+ * @param {string} voice - voice name for synthezation
  * @returns 
  */
 async function generateSpeech(message, voice) {
   const endpoint = "https://api.uberduck.ai/speak"
   const response = await axios.post(endpoint, { speech: message, voice: voice }, { headers: apiHeaders });
   if (response.status > 300) {
-    throw new Error(`/speak-status Error ${response.status}`)
+    throw new Error(`/speak Error ${response.status}`)
   }
   return response.data
 }

@@ -1,4 +1,4 @@
-const events = require("../events/eventsHandler")
+const {eventEmitter} = require("../events/eventsHandler")
 const commandHandler = require("./commandHandler")
 const tmi = require("./tmiClient")
 const config = require("../configs/config")
@@ -8,7 +8,7 @@ const AUTHORIZED_USERS = config.AUTHORIZED_USERS
 
 function handleCommandTts(messageInfo) {
     const synthMessage = `${messageInfo.user} said. ${messageInfo.messageContent}`
-    twitchClient.eventEmitter.emit("synthesizeAudio", synthMessage);
+    twitchClient.eventEmitter.emit("synthesizeAudioUberduck", synthMessage);
 }
 
 function parseChatCommandMessage(user, message) {
@@ -20,13 +20,14 @@ function parseChatCommandMessage(user, message) {
 
 tmi.client.on("chat", (channel, user, message, self) => {
   const commandName = message.split(" ")[0]
-  const isUserAuthorized = AUTHORIZED_USERS.includes(user.username.toLocaleLowerCase())
+  const isUserAuthorized = AUTHORIZED_USERS.includes(user.username.toLowerCase())
   try {
 
     if (user.username === USERNAME_OAUTH) {
       console.log(`${user.username}: ${message}`);
-      events.eventEmitter.emit("synthesizeAudio", message);
+      eventEmitter.emit("synthesizeAudioUberduck", message);
     }
+
     if(commandName === "!tts" && isUserAuthorized) {
         const messageInfo = commandHandler.parseChatCommandMessageTts(user, message)
         commandHandler.handleCommandTts(messageInfo)

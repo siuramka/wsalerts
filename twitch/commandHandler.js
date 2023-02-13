@@ -1,19 +1,19 @@
-const events = require("../events/eventsHandler")
+const {eventEmitter} = require("../events/eventsHandler")
 
 function handleCommandTts(messageInfo) {
     const synthMessage = `${messageInfo.username} said. ${messageInfo.messageContent}`
-    events.eventEmitter.emit("synthesizeAudio", synthMessage);
+    eventEmitter.emit("synthesizeAudioUberduck", synthMessage);
 }
 
 function handleCommandTtsv(messageInfo) {
     const synthMessage = `${messageInfo.username} said. ${messageInfo.messageContent}`
     const voice = messageInfo.voice
-    events.eventEmitter.emit("synthesizeAudio", synthMessage, voice);
+    eventEmitter.emit("synthesizeAudioUberduck", synthMessage, voice);
 }
 
 function handleCommandTts11(messageInfo) {
     const synthMessage = `${messageInfo.username} said. ${messageInfo.messageContent}`
-    events.eventEmitter.emit("synthesizeAudio11", synthMessage);
+    eventEmitter.emit("synthesizeAudio11", synthMessage);
 }
 
 function parseChatCommandMessageTts(user, message) {
