@@ -13,7 +13,6 @@ Installation
 
     Clone the repository
     npm install
-    npm run start
     
 Create an .env file
     Set the appropriate values for the environment variables in .env:
@@ -34,7 +33,7 @@ Create an .env file
     
 Usage
 
-    Start the server: npm start
+    Start the server: npm run start
     Open the browser and navigate to `http://localhost:3331/tts`. This will start the WebSocket connection and begin listening for Twitch chat messages.
     To trigger a custom alert or command, send a message in the Twitch chat that matches one of the following formats:
         !tts <message>: Generates and plays TTS audio for the specified message using UBERDUCK TTS provider.
