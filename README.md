@@ -17,8 +17,8 @@ Installation
     
 Create an .env file
     Set the appropriate values for the environment variables in .env:
-    #EXPRESS
-    PORT=3331
+    
+    #EXPRESS PORT=3331
 
     #TWITCH
     OAUTH=TWITCHBOT_OAUTH
