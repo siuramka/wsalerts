@@ -1,4 +1,4 @@
-const {eventEmitter} = require("../events/eventsHandler")
+import { eventEmitter } from "../events/eventsHandler";
 const commandHandler = require("./commandHandler")
 const tmi = require("./tmiClient")
 const config = require("../configs/config")
@@ -18,7 +18,7 @@ function parseChatCommandMessage(user, message) {
   Emits event when message is from user CHANNEL
 */
 
-tmi.client.on("chat", (channel, user, message, self) => {
+tmi.client.on("chat", (channel: any, user: { username: string }, message: string, self: any) => {
   const commandName = message.split(" ")[0]
   const isUserAuthorized = AUTHORIZED_USERS.includes(user.username.toLowerCase())
   try {

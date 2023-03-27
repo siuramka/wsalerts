@@ -21,9 +21,6 @@ const options = {
     channels: [CHANNEL]
 };
 
-test('getVoiceIdFromVoiceName', async () => {
-    const data = await helpers.getVoiceIdFromVoiceName("nidas").then(d => console.log(d))
-});
 // test('11labs api synth test', async () => {
 //     const data = await generateSpeech("message message yo","21m00Tcm4TlvDq8ikWAM").then((d) => console.log(d))
 //     console.log("data" + data)

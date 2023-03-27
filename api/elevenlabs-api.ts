@@ -9,7 +9,7 @@ const apiHeaders = {
     'Content-Type': 'application/json'
 }
 
-async function getUserVoices() {
+export async function getUserVoices() {
     const endpoint = url + "/voices"
     const response = await axios.get(endpoint, { headers: apiHeaders })
 
@@ -20,7 +20,7 @@ async function getUserVoices() {
     return response.data
 }
 
-async function generateSpeechData(message, voice) {
+export async function generateSpeechData(message: any, voice: string) {
     const endpoint = url + "/text-to-speech/"
     const response = await axios.post(endpoint + voice, { text: message }, { responseType: 'arraybuffer', headers: apiHeaders });
 
@@ -30,7 +30,4 @@ async function generateSpeechData(message, voice) {
 
     const audioData = Buffer.from(response.data, 'binary').toString('base64')
     return audioData
-}
-module.exports = {
-    generateSpeechData, getUserVoices
 }

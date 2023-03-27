@@ -1,4 +1,4 @@
-const tmi = require("tmi.js");
+import tmi from "tmi.js";
 const config = require("../configs/config");
 
 const OAUTH = config.OAUTH;

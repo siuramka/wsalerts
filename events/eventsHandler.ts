@@ -1,10 +1,10 @@
 const EventEmitter = require('events');
-const eventEmitter = new EventEmitter();
+export const eventEmitter = new EventEmitter();
 const { getSynthesizedAudioUrl, getSynthesizedAudioBase64 } = require('../tts/tts')
 const { sleep, getRandomVoiceUberduck, getRandomVoiceElevenlabs} = require("../tts/helpers")
 
 
-eventEmitter.on('synthesizeAudioUberduck', async (message, voice) => {
+eventEmitter.on('synthesizeAudioUberduck', async (message: any, voice: any) => {
     console.log(`[Uberduck] Got synthesize request "${message}"!`)
     let voiceData = voice || getRandomVoiceUberduck();
     const audioPath = await getSynthesizedAudioUrl(message, voiceData)
@@ -14,7 +14,7 @@ eventEmitter.on('synthesizeAudioUberduck', async (message, voice) => {
     }
 })
 
-eventEmitter.on('synthesizeAudio11', async (message, voice) => {
+eventEmitter.on('synthesizeAudio11', async (message: any, voice: any) => {
     console.log(`[Elevenlabs] Got synthesize request "${message}"!`)
     let voiceData = voice || getRandomVoiceUberduck();
     const audioBlob = await getSynthesizedAudioBase64(message, voiceData)

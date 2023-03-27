@@ -11,12 +11,12 @@ const io = require("socket.io")(server, {
 });
 
 
-io.on("connection", function (socket) {
+io.on("connection", function (socket: { emit: (arg0: string, arg1: any) => void; }) {
   console.log("Client connected to socket.io server!")
-  eventEmitter.on("sendAudioUrl", (audioLink) => {
+  eventEmitter.on("sendAudioUrl", (audioLink: any) => {
     socket.emit("data", audioLink);
   });
-  eventEmitter.on("sendAudioBlob", (audioBlob) => {
+  eventEmitter.on("sendAudioBlob", (audioBlob: any) => {
     socket.emit("data", audioBlob);
   });
 });

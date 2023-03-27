@@ -1,4 +1,4 @@
-const config = require("../configs/config");
+import { config } from "../configs/config";
 const axios = require('axios');
 
 const API_KEY = config.API_KEY;
@@ -17,7 +17,7 @@ const apiHeaders = {
  * @param {string} voice - voice name for synthezation
  * @returns 
  */
-async function generateSpeech(message, voice) {
+async function generateSpeech(message: any, voice: any) {
   const endpoint = "https://api.uberduck.ai/speak"
   const response = await axios.post(endpoint, { speech: message, voice: voice }, { headers: apiHeaders });
   if (response.status > 300) {
@@ -27,15 +27,11 @@ async function generateSpeech(message, voice) {
 }
 
 
-async function getSpeakStatus(uuid) {
+async function getSpeakStatus(uuid: any) {
   const endpoint = `https://api.uberduck.ai/speak-status?uuid=${uuid}`
   const response = await axios.get(endpoint, { headers: apiHeaders});
   if (response.status > 300) {
     throw new Error(`/speak-status Error ${response.status}`)
   }
   return response.data
-}
-
-module.exports = {
-  generateSpeech, getSpeakStatus
 }
