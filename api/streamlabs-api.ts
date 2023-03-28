@@ -7,7 +7,7 @@ interface Response {
 }
 
 
-async function getAudioUrlStreamlabs(message: string) {
+export async function getAudioUrlStreamlabs(message: string) {
   const { data, status } = await axios.post<Response>("https://us-central1-sunlit-context-217400.cloudfunctions.net/streamlabs-tts", { text: message, voice: "Brian" }, {
     headers: {
       Accept: 'application/json',

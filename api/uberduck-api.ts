@@ -17,7 +17,7 @@ const apiHeaders = {
  * @param {string} voice - voice name for synthezation
  * @returns 
  */
-async function generateSpeech(message: any, voice: any) {
+export async function generateSpeech(message: any, voice: any) {
   const endpoint = "https://api.uberduck.ai/speak"
   const response = await axios.post(endpoint, { speech: message, voice: voice }, { headers: apiHeaders });
   if (response.status > 300) {
@@ -27,7 +27,7 @@ async function generateSpeech(message: any, voice: any) {
 }
 
 
-async function getSpeakStatus(uuid: any) {
+export async function getSpeakStatus(uuid: any) {
   const endpoint = `https://api.uberduck.ai/speak-status?uuid=${uuid}`
   const response = await axios.get(endpoint, { headers: apiHeaders});
   if (response.status > 300) {

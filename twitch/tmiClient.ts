@@ -19,9 +19,5 @@ const options: tmi.Options = {
   },
   channels: CHANNEL
 };
-const client = new tmi.Client(options);
+export const client = new tmi.Client(options);
 client.connect();
-
-module.exports = {
-    client
-}

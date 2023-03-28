@@ -24,4 +24,3 @@ eventEmitter.on('synthesizeAudio11', async (message: any, voice: any) => {
     }
 
 })
-module.exports = { eventEmitter }
