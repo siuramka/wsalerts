@@ -1,7 +1,7 @@
 import { eventEmitter } from "../events/eventsHandler";
 const commandHandler = require("./commandHandler")
 const tmi = require("./tmiClient")
-const config = require("../configs/config")
+import { config } from "../configs/config"
 const USERNAME_OAUTH = config.USERNAME_OAUTH
 const AUTHORIZED_USERS = config.AUTHORIZED_USERS
 /*
@@ -20,7 +20,9 @@ function parseChatCommandMessage(user, message) {
 
 tmi.client.on("chat", (channel: any, user: { username: string }, message: string, self: any) => {
   const commandName = message.split(" ")[0]
-  const isUserAuthorized = AUTHORIZED_USERS.includes(user.username.toLowerCase())
+  console.log("auth")
+  console.log(AUTHORIZED_USERS)
+  const isUserAuthorized = AUTHORIZED_USERS?.includes(user.username.toLowerCase())
   try {
 
     if (user.username === USERNAME_OAUTH) {

@@ -1,13 +1,14 @@
 import tmi from "tmi.js";
-const config = require("../configs/config");
+import { config } from "../configs/config";
 
 const OAUTH = config.OAUTH;
 const USERNAME_OAUTH = config.USERNAME_OAUTH;
-const CHANNEL = config.CHANNEL;
+const CHANNEL = config.CHANNEL
 
-const options = {
+
+const options: tmi.Options = {
   options: {
-    debug: false
+    debug: true
   },
   connection: {
     reconnect: true
@@ -16,7 +17,7 @@ const options = {
     username: USERNAME_OAUTH,
     password: OAUTH
   },
-  channels: [CHANNEL]
+  channels: CHANNEL
 };
 const client = new tmi.Client(options);
 client.connect();

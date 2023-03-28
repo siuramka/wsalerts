@@ -1,4 +1,4 @@
-const config = require("../configs/config");
+import { config } from "../configs/config";
 const axios = require('axios');
 const url = "https://api.elevenlabs.io/v1"
 const API_KEY = config.XI_API_KEY;

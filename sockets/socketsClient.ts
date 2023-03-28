@@ -1,7 +1,7 @@
 const {app} = require("../expressServer")
 const server = require("http").createServer(app);
-const {eventEmitter} = require("../events/eventsHandler")
-const config = require("../configs/config")
+const { eventEmitter } = require("../events/eventsHandler")
+import {config } from "../configs/config"
 const PORT = config.PORT;
 const io = require("socket.io")(server, {
   cors: {
