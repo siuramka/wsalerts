@@ -1,5 +1,1 @@
-exports.voiceList = [
-    "nidas",
-    "leslie",
-    "koil"
-]
+exports.voiceList = ["nidas", "leslie", "koil"];

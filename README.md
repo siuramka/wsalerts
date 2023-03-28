@@ -4,15 +4,10 @@ This repository contains a Node.js application that utilizes tmi.js to listen fo
 The code can easily be modified to implement donations, twitch bits and other alert events. The program also plays a TTS message from the bot user, this can be disabled by removing the specific condition check in `twitch/chatHandler.js`
 
 
-Requirements
-
-    Node.js (version 12 or higher)
-    npm
-
 Installation
 
     Clone the repository
-    npm install
+    <typescript node app installation heh>
     
 Create an .env file
     Set the appropriate values for the environment variables in .env:
