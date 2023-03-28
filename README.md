@@ -40,4 +40,28 @@ Usage
         !ttsv <voice>: <message>: Generates and plays TTS audio for the specified message using UBERDUCK TTS provider with provided voice name.
         !tts11 <message>: Generates and plays TTS audio for the specified message using ELEVANLABS TTS provider.
     The TTS audio can be captured and used as alerts in OBS or other broadcasting software adding the `http://localhost:3331/tts` as Browser Source Media in OBS
+
+
+Ideas
+
+    Implement filtering to remove bad words from speech message
+
+    Play TTS with points redeem
+        Config 
+
+    Better config
+        - SQLlite or MongoDB for saving settings
+        - Ability to update settings/db with a discord bot or dashboard
+        - Check if config is available
+
+    Donations
+
+    More providers
+
+    Multiple users support with individual settings
+
+    Make own voice provider
+
+
+
  

@@ -20,8 +20,6 @@ function parseChatCommandMessage(user, message) {
 
 tmi.client.on("chat", (channel: any, user: { username: string }, message: string, self: any) => {
   const commandName = message.split(" ")[0]
-  console.log("auth")
-  console.log(AUTHORIZED_USERS)
   const isUserAuthorized = AUTHORIZED_USERS?.includes(user.username.toLowerCase())
   try {
 

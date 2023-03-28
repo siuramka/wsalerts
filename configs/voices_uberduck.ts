@@ -6,7 +6,6 @@ exports.voiceList = [
     "peter-griffin",
     "eminem",
     "rick-sanchez",
-    "mario",
     "chills",
     "heavy",
     "scout",
