@@ -1,7 +1,10 @@
 const EventEmitter = require("events");
 export const eventEmitter = new EventEmitter();
-import { Tts } from "../tts/tts"
+import { Tts } from "../tts/Tts"
 const { Utils } = require("../tts/Utils");
+
+
+//google observer pattern 
 
 eventEmitter.on("synthesizeAudioUberduck", async (message: any, voice: any) => {
   console.log(`[Uberduck] Got synthesize request "${message}"!`);
