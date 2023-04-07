@@ -1,6 +1,5 @@
-import { eventEmitter } from "../events/eventsHandler";
+import EventsHandler from "../events/eventHandler";
 import tmi from "tmi.js";
-
 
 interface Command {
     handle(): void;
@@ -38,7 +37,7 @@ class TtsCommand implements Command {
 
     handle(): void {
         const synthMessage = `${this._message.username} said. ${this._message.messageContent}`
-        eventEmitter.emit("synthesizeAudioUberduck", synthMessage);
+        EventsHandler.emit("synthesizeAudioUberduck", synthMessage);
     }
 }
 
@@ -63,12 +62,12 @@ class commandHandler {
     public static handleCommandTtsv(messageInfo:any ) {
         const synthMessage = `${messageInfo.username} said. ${messageInfo.messageContent}`
         const voice = messageInfo.voice
-        eventEmitter.emit("synthesizeAudioUberduck", synthMessage, voice);
+        EventsHandler.emit("synthesizeAudioUberduck", synthMessage, voice);
     }
     
     public static handleCommandTts11(messageInfo: any) {
         const synthMessage = `${messageInfo.username} said. ${messageInfo.messageContent}`
-        eventEmitter.emit("synthesizeAudio11", synthMessage);
+        EventsHandler.emit("synthesizeAudio11", synthMessage);
     }
     
     public static parseChatCommandMessageTts(user: any, message: any) {

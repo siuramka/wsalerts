@@ -1,6 +1,5 @@
 import tmi from "tmi.js";
 import { config } from "../configs/config";
-import { eventEmitter } from "../events/eventsHandler";
 import { CommandFactory, parsedCommand } from "./commandFactory";
 
 const USERNAME_OAUTH = config.USERNAME_OAUTH;
@@ -98,7 +97,7 @@ class ChatEventsHandler implements IChatEventsHandler {
   }
   public setupChatListener(): void {
     this._client.on("chat", (channel, user, message, self) => {
-      const commandName = message.split(" ")[0];
+      let commandName = message.split(" ")[0];
       console.log("================= change later ====================");
       const isUserAuthorized = true; //AUTHORIZED_USERS?.includes(user.username.toLowerCase())
       try {
@@ -107,11 +106,12 @@ class ChatEventsHandler implements IChatEventsHandler {
         //command pattern
         if (user.username === USERNAME_OAUTH) {
           console.log(`${user.username}: ${message}`);
-          eventEmitter.emit("synthesizeAudioUberduck", message);
+          commandName = "!tts"
         }
         
         if (isUserAuthorized) {
           const targetCommand = CommandFactory.getOperation(commandName);
+          //should only be one method maybe
           targetCommand?.parse(user, message);
           targetCommand?.handle();
         }
