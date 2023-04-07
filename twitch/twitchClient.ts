@@ -1,7 +1,7 @@
 import tmi from "tmi.js";
 import { config } from "../configs/config";
-const commandHandler = require("./commandHandler")
 import { eventEmitter } from "../events/eventsHandler";
+import { CommandFactory, parsedCommand } from "./commandFactory";
 
 const USERNAME_OAUTH = config.USERNAME_OAUTH
 const AUTHORIZED_USERS = config.AUTHORIZED_USERS
@@ -91,7 +91,7 @@ export class TwitchClient implements ITwitchClient {
 */
 
 interface IChatEventsHandler {
-  setupListener: () => void
+  setupChatListener: () => void
 }
 
 class ChatEventsHandler implements IChatEventsHandler {
@@ -99,41 +99,66 @@ class ChatEventsHandler implements IChatEventsHandler {
 
   constructor(client: tmi.Client) {
     this._client = client;
-    this.setupListener()
+    this.setupChatListener()
   }
-  
-  public setupListener(): void {
+  public setupChatListener(): void {
     this._client.on("chat", (channel, user, message, self) => {
-      console.log("received message")
       const commandName = message.split(" ")[0]
+      console.log("================= change later ====================")
       const isUserAuthorized = true//AUTHORIZED_USERS?.includes(user.username.toLowerCase())
       try {
-    
+    //logic for this:https://www.baeldung.com/java-replace-if-statements
+    //https://refactoring.guru/design-patterns/command/typescript/example
+    //command pattern
         if (user.username === USERNAME_OAUTH) {
           console.log(`${user.username}: ${message}`);
           eventEmitter.emit("synthesizeAudioUberduck", message);
         }
-    
-        if(commandName === "!tts" && isUserAuthorized) {
-            const messageInfo = commandHandler.parseChatCommandMessageTts(user, message)
-            commandHandler.handleCommandTts(messageInfo)
+        if(isUserAuthorized){
+          const targetCommand = CommandFactory.getOperation(commandName)
+          targetCommand?.parse(user, message)
+          targetCommand?.handle()
         }
-        
-        if(commandName == "!ttsv" && isUserAuthorized) {
-          const messageInfo = commandHandler.parseChatCommandMessageTtsv(user, message)
-          commandHandler.handleCommandTtsv(messageInfo)
-        }
-        if(commandName == "!tts11" && isUserAuthorized) {
-          const messageInfo = commandHandler.parseChatCommandMessageTts(user, message)
-          commandHandler.handleCommandTts11(messageInfo)
-    
-        }
+  
       } catch (error) {
         console.log(`Error in chat parsing! => `)
         console.log(error)
       }
     });
-  }
-
-
+  }  
+  // public setupChatListener(): void {
+  //   this._client.on("chat", (channel, user, message, self) => {
+  //     const commandName = message.split(" ")[0]
+  //     console.log("================= change later ====================")
+  //     const isUserAuthorized = true//AUTHORIZED_USERS?.includes(user.username.toLowerCase())
+  //     try {
+    
+  //       if (user.username === USERNAME_OAUTH) {
+  //         console.log(`${user.username}: ${message}`);
+  //         eventEmitter.emit("synthesizeAudioUberduck", message);
+  //       }
+    
+  //       if(commandName === "!tts" && isUserAuthorized) {
+  //           const messageInfo = commandHandler.parseChatCommandMessageTts(user, message)
+  //           commandHandler.handleCommandTts(messageInfo)
+  //       }
+        
+  //       if(commandName == "!ttsv" && isUserAuthorized) {
+  //         const messageInfo = commandHandler.parseChatCommandMessageTtsv(user, message)
+  //         commandHandler.handleCommandTtsv(messageInfo)
+  //       }
+  //       if(commandName == "!tts11" && isUserAuthorized) {
+  //         const messageInfo = commandHandler.parseChatCommandMessageTts(user, message)
+  //         commandHandler.handleCommandTts11(messageInfo)
+    
+  //       }
+  //     } catch (error) {
+  //       console.log(`Error in chat parsing! => `)
+  //       console.log(error)
+  //     }
+  //   });
+  // }
 }
+
+
+
