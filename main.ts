@@ -1,5 +1,5 @@
 import { Server } from "./sockets/io-client"
-import { TwitchClient } from "./twitch/tmiClient"
+import { TwitchClient } from "./twitch/twitchClient"
 
 const client = new TwitchClient();
 client.connect()
