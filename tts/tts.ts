@@ -1,4 +1,4 @@
-import { Uberduck } from "../api/uberduck-api"
+import { UberduckAPI } from '../api/Uberduck'
 const elevenlabs = require("../api/elevenlabs-api")
 const { Utils } = require("../tts/Utils")
 

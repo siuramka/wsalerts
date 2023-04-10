@@ -1,5 +1,5 @@
 import tmi from "tmi.js";
-import { config } from "../configs/config";
+import { config } from "../configs/configs";
 import { CommandFactory, parsedCommand } from "./commandFactory";
 
 const USERNAME_OAUTH = config.USERNAME_OAUTH;
@@ -97,6 +97,7 @@ class ChatEventsHandler implements IChatEventsHandler {
   }
   public setupChatListener(): void {
     this._client.on("chat", (channel, user, message, self) => {
+
       let commandName = message.split(" ")[0];
       console.log("================= change later ====================");
       const isUserAuthorized = true; //AUTHORIZED_USERS?.includes(user.username.toLowerCase())

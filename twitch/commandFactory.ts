@@ -84,3 +84,41 @@ class commandHandler {
         return { username, messageContent, voice }
     }
 }
+
+
+//Channel points 
+// tmi.client.on("redeem", (channel, user, rewardType, messageTags, message) => {
+//   console.log(`${user} radeemed ${channel}, ${user}, ${rewardType}, ${JSON.stringify(messageTags)}, ${message}`)
+//   events.eventEmitter.emit("channelPointsRedeem", message);
+// });
+
+// mariuspure radeemed #nidas, mariuspure, highlighted-message, {"badge-info":{"subscriber":"18"},"badges":{"moderator":"1","subscriber":"18"},"color":"#2E8B57","display-name":"mariuspure","emotes":null,"first-msg":false,"flags":null,"id":"38d27acb-5ad4-48d3-aa21-e781f202a5f5","mod":true,"msg-id":"highlighted-message","returning-chatter":false,"room-id":"138907338","subscriber":true,"tmi-sent-ts":"1675247657788","turbo":false,"user-id":"85157395","user-type":"mod","emotes-raw":null,"badge-info-raw":"subscriber/18","badges-raw":"moderator/1,subscriber/18","username":"mariuspure","message-type":"chat"}, gonna lose all my points
+// {
+//   "badge-info": {
+//     "subscriber": "18"
+//   },
+//   "badges": {
+//     "moderator": "1",
+//     "subscriber": "18"
+//   },
+//   "color": "#2E8B57",
+//   "display-name": "mariuspure",
+//   "emotes": null,
+//   "first-msg": false,
+//   "flags": null,
+//   "id": "38d27acb-5ad4-48d3-aa21-e781f202a5f5",
+//   "mod": true,
+//   "msg-id": "highlighted-message",
+//   "returning-chatter": false,
+//   "room-id": "138907338",
+//   "subscriber": true,
+//   "tmi-sent-ts": "1675247657788",
+//   "turbo": false,
+//   "user-id": "85157395",
+//   "user-type": "mod",
+//   "emotes-raw": null,
+//   "badge-info-raw": "subscriber/18",
+//   "badges-raw": "moderator/1,subscriber/18",
+//   "username": "mariuspure",
+//   "message-type": "chat"
+// }

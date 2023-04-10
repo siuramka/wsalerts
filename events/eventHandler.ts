@@ -2,9 +2,6 @@ import EventEmitter from "events";
 import { Tts } from "../tts/Tts"
 const { Utils } = require("../tts/Utils");
 
-
-//google observer pattern 
-
 class EventHandler extends EventEmitter {
 
   constructor(){
