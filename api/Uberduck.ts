@@ -37,21 +37,23 @@ class Uberduck extends ApiBase {
     }
 
     async getSpeechData(message: any, voice: any) {
-        const response = await this.post(`/speak`,{ speech: message, voice: voice }, this._apiHeaders)
+        const response = await this.post(`/speak`,{ speech: message, voice: voice }, this._apiHeaders )
 
         if (response.status > 300) {
             throw new Error(`/speak Error ${response.status}`)
         }
+        
         return response.data
     }
 
     async getSpeakStatus(uuid: any) {
-        const response = await this.get(`speak-status?uuid=${uuid}`, {}, this._apiHeaders)
-        
+        const response = await this.get(`/speak-status?uuid=${uuid}`, {}, this._apiHeaders)
+
         if (response.status > 300) {
             throw new Error(`/speak-status Error ${response.status}`)
         }
         return response.data
     }
 }
+
 export const UberduckAPI = new Uberduck()

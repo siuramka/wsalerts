@@ -35,8 +35,8 @@ class Elevenlabs extends ApiBase {
         }
     }
 
-    async getUserVoices(message: any, voice: any) {
-        const response = await this.get(`/voices`,{ speech: message, voice: voice }, this._apiHeaders)
+    async getUserVoices() {
+        const response = await this.get(`/voices`,{}, this._apiHeaders)
 
         if (response.status > 300) {
             throw new Error(`[${this._baseUrl}] /voices Error ${response.status}`);

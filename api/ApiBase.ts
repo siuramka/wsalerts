@@ -1,6 +1,6 @@
 
 // https://khalilstemmler.com/blogs/typescript/abstract-class/
-// https://www.apollographql.com/docs/apollo-server/data/fetching-rest
+// https://www.apollographql.com/d  ocs/apollo-server/data/fetching-rest
 // https://github.com/apollographql/datasource-rest/blob/main/src/RESTDataSource.ts
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios"
@@ -35,20 +35,20 @@ export abstract class ApiBase {
         return this._axiosInstance(config)
     }
 
-    protected post(url: string, params?: any, headers?: any): Promise<AxiosResponse> {
+    protected post(url: string, data?: any, headers?: any): Promise<AxiosResponse> {
         return this.getAxiosInstance({
             method: 'POST',
             url: `${this._baseUrl}${url}`,
-            params: params ? params : null,
+            data: data ? data : null,
             headers: headers ? headers : null
           })
     }
 
-    protected get (url: string, params?: any, headers?: any): Promise<AxiosResponse> {
+    protected get (url: string, data?: any, headers?: any): Promise<AxiosResponse> {
         return this.getAxiosInstance({
           method: 'GET',
           url: `${this._baseUrl}${url}`,
-          params: params ? params : null,
+          data: data ? data : null,
           headers: headers ? headers : null
         })
       }

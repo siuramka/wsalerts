@@ -25,3 +25,5 @@ class Streamlabs extends ApiBase {
         return response.data.speak_url
     }
 }
+
+export const StreamlabsAPI = new Streamlabs()

@@ -1,7 +1,7 @@
+import { ElevenlabsAPI } from "../api/Elevenlabs";
+
 const voicesUberduck = require("../configs/voices_uberduck");
 const voicesElevenlabs = require("../configs/voices_11labs");
-const elevenlabs = require("../api/elevenlabs-api")
-
 export class Utils {
   
   static sleep(ms: number) {
@@ -9,7 +9,7 @@ export class Utils {
   }
 
   static async getVoiceIdFromVoiceName(voice: any) {
-    const voiceListJson = await elevenlabs.getUserVoices();
+    const voiceListJson = await ElevenlabsAPI.getUserVoices();
     const foundEntry = voiceListJson.voices.find((entry: { name: any; }) => {
       return entry.name === voice
     });
