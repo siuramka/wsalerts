@@ -6,8 +6,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios"
 import { ApiConfigType } from "../configs/configs"
 
-// this config is driving me crazy need to rewrite it tbh
-
 
 
 export abstract class ApiBase {

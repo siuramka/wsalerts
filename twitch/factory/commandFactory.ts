@@ -1,4 +1,4 @@
-import EventsHandler from "../events/eventHandler";
+import EventsHandler from "../../events/eventHandler";
 import tmi from "tmi.js";
 
 interface Command {
@@ -53,38 +53,6 @@ export class CommandFactory {
         return this.commandMap.get(commandName);
     }
 }
-
-
-
-
-class commandHandler {
-    
-    public static handleCommandTtsv(messageInfo:any ) {
-        const synthMessage = `${messageInfo.username} said. ${messageInfo.messageContent}`
-        const voice = messageInfo.voice
-        EventsHandler.emit("synthesizeAudioUberduck", synthMessage, voice);
-    }
-    
-    public static handleCommandTts11(messageInfo: any) {
-        const synthMessage = `${messageInfo.username} said. ${messageInfo.messageContent}`
-        EventsHandler.emit("synthesizeAudio11", synthMessage);
-    }
-    
-    public static parseChatCommandMessageTts(user: any, message: any) {
-        const messageContent = message.replace("!tts ","")
-        const username = user.username
-        return { username, messageContent }
-    }
-    
-    public static parseChatCommandMessageTtsv(user: any, message: any) {
-        let messageContent = message.replace("!ttsv ","")
-        const voice = messageContent.split(" ")[0]
-        messageContent = messageContent.replace(`${voice} `,``)
-        const username = user.username
-        return { username, messageContent, voice }
-    }
-}
-
 
 //Channel points 
 // tmi.client.on("redeem", (channel, user, rewardType, messageTags, message) => {
