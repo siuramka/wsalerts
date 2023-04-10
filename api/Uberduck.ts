@@ -1,37 +1,47 @@
+import { ApiConfigType } from "../configs/configs";
+import { _UberduckConfig } from "../configs/configs";
 import { ApiBase } from "./ApiBase";
+
 
 class Uberduck extends ApiBase {
     private _apiCredentials: string
-    private _apiHeaders: { Accept: string; 'Content-Type': string; Authorization: string; }
+    private _apiHeaders: any
+
     constructor() {
         super("https://api.uberduck.ai")
-        this._apiCredentials = "Basic " + Buffer.from(this._API_KEY + ":" + this._API_SECRET).toString('base64')
-        this.setApiHeaders()
+        this.setConfig(_UberduckConfig)
+        this.setCredentials(this.getConfig())
+        this.setAuthHeaders()
+       
     }
 
-    private setApiHeaders() {
+    private setHeaders(headers: any): void {
+        this._apiHeaders = headers
+    }
+
+    private setAuthHeaders() {
         const apiHeaders = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'Authorization': this._apiCredentials
           }
-          this._apiHeaders = apiHeaders
+        this.setHeaders(apiHeaders)
+    }
+
+    private setCredentials(config: ApiConfigType): void {
+        //https://betterprogramming.pub/advanced-typescript-how-to-use-interface-inheritance-with-discriminated-unions-dddf77cb3836 
+        //discriminated unions
+        if(config.type === "uberduck"){
+            this._apiCredentials = "Basic " + Buffer.from(config.API_KEY + ":" + config.API_SECRET).toString('base64')
+        }
     }
 
     async getSpeechData(message: any, voice: any) {
-        const apiHeaders = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': this._apiCredentials
-          }
-        return this.post(`/speak`,{ speech: message, voice: voice }, apiHeaders)
+        return this.post(`/speak`,{ speech: message, voice: voice }, this._apiHeaders)
     }
+
     async getSpeakStatus(uuid: any) {
-        const apiHeaders = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': this._apiCredentials
-          }
-        return this.get(`speak-status?uuid=${uuid}`, {}, apiHeaders)
+        return this.get(`speak-status?uuid=${uuid}`, {}, this._apiHeaders)
     }
 }
+export const UberduckAPI = new Uberduck()

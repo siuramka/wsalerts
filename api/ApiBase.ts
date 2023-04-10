@@ -1,24 +1,34 @@
 
 // https://khalilstemmler.com/blogs/typescript/abstract-class/
 // https://www.apollographql.com/docs/apollo-server/data/fetching-rest
+// https://github.com/apollographql/datasource-rest/blob/main/src/RESTDataSource.ts
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios"
-import { config } from "../configs/config"
+import { ApiConfigType } from "../configs/configs"
 
 // this config is driving me crazy need to rewrite it tbh
 
+
+
 export abstract class ApiBase {
     protected _baseUrl: string
+    private _config: ApiConfigType
     private _axiosInstance: AxiosInstance
-    protected _API_KEY: string | undefined
-    protected _API_SECRET: string | undefined
 
     constructor(baseUrl: string) {
         this._baseUrl = baseUrl
         this._axiosInstance = axios.create({})
-        this._API_KEY = config.API_KEY
-        this._API_SECRET = config.API_KEY
-
+    } 
+    /**
+     * 
+     * Since I have multiple api providers, each has different config parameters for authorization mainly
+     * I wanted to create a protected variable so that I have reusable code of this where I need it and how I need to config it
+     */
+    protected setConfig(config: ApiConfigType) {
+      this._config = config
+    }
+    protected getConfig(): ApiConfigType {
+      return this._config
     }
 
     private getAxiosInstance(config: AxiosRequestConfig): Promise<AxiosResponse> {
