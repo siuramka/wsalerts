@@ -1,5 +1,5 @@
 import EventEmitter from "events";
-import { Tts } from "../tts/Tts"
+import { Tts } from "../tts/tts"
 const { Utils } = require("../tts/Utils");
 
 class EventHandler extends EventEmitter {
