@@ -1,6 +1,6 @@
 {
-  "name": "nidasalerts",
-  "version": "1.0.0",
+  "name": "wsalerts",
+  "version": "2.0.0",
   "description": "",
   "main": "server.js",
   "scripts": {

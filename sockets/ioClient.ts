@@ -1,6 +1,6 @@
 import http from "http";
 import { Server as SocketIOServer, Socket } from "socket.io";
-import { App } from "../web/web-server";
+import { App } from "../web/webServer";
 
 export class Server {
   private server: http.Server;

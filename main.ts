@@ -1,4 +1,4 @@
-import { Server } from "./sockets/io-client"
+import { Server } from "./sockets/ioClient"
 import { TwitchClient } from "./twitch/twitchClient"
 
 const client = new TwitchClient();
