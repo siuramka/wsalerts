@@ -5,7 +5,7 @@ interface IConfig {
   Provider: Provider;
 }
 
-//singleton design pattern
+//singleton design pattern(not anymore since I added refreshInstance?)
 class DatabaseConfig {
   private static _instance: DatabaseConfig;
   private prisma: PrismaClient;
@@ -20,7 +20,7 @@ class DatabaseConfig {
     if (this._instance) {
       return this._instance;
     } else {
-
+        this.refreshInstance()
     }
   }
 
@@ -28,7 +28,7 @@ class DatabaseConfig {
     this._instance = new DatabaseConfig();
     return this._instance;
   }
-  
+
   private async init() {
     try {
       await this.prisma.$connect();
