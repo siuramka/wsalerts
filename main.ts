@@ -9,4 +9,3 @@ const server = new Server(3333)
 server.start()
 
 const db = DatabaseConfig.getInstance()
-console.log(db.getConfig())

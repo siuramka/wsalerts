@@ -20,7 +20,7 @@ class DatabaseConfig {
     if (this._instance) {
       return this._instance;
     } else {
-        this.refreshInstance()
+        return this.refreshInstance()
     }
   }
 
