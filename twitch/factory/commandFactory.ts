@@ -54,6 +54,7 @@ export class CommandFactory {
     }
 }
 
+
 //Channel points 
 // tmi.client.on("redeem", (channel, user, rewardType, messageTags, message) => {
 //   console.log(`${user} radeemed ${channel}, ${user}, ${rewardType}, ${JSON.stringify(messageTags)}, ${message}`)

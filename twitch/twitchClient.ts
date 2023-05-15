@@ -92,6 +92,7 @@ interface IChatEventsHandler {
 }
 
 
+
 class ChatEventsHandler implements IChatEventsHandler {
   private _client: tmi.Client;
 
@@ -102,7 +103,8 @@ class ChatEventsHandler implements IChatEventsHandler {
   }
 
   setupRadeemListener() {
-    //tmi.redeem is half finished
+    this._client.on("redeem", () => {
+    })
   }
 
   setupCheerListener(): void {

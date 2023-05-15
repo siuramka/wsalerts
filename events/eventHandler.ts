@@ -2,6 +2,7 @@ import EventEmitter from "events";
 import { Tts } from "../tts/Tts"
 const { Utils } = require("../tts/Utils");
 
+
 class EventHandler extends EventEmitter {
 
   constructor(){
@@ -10,7 +11,7 @@ class EventHandler extends EventEmitter {
   }
 
   private setupSynthesizeListeners(): void {
-    this.on("synthesizeAudioUberduck", async (message: any, voice: any) => {
+    this.on("synthesizeAudioUberduck" , async (message: any, voice: any) => {
       console.log(`[Uberduck] Got synthesize request "${message}"!`);
       let voiceData = voice || Utils.getRandomVoiceUberduck();
       const audioPath = await Tts.getSynthesizedAudioUrl(message, voiceData);
@@ -26,6 +27,15 @@ class EventHandler extends EventEmitter {
       const audioBlob = await Tts.getSynthesizedAudioBase64(message, voiceData);
       if (audioBlob) {
         console.log(`Synthesized "${message}" with voice "${voiceData}"`);
+        this.emit("sendAudioBlob", audioBlob);
+      }
+    });
+
+    this.on("synthesizeAudioStreamelabs", async (message: any, voice: any) => {
+      console.log(`[Streamlabs] Got synthesize request "${message}"!`);
+      const audioBlob = await Tts.getSynthesizedAudioBase64(message, voice);
+      if (audioBlob) {
+        console.log(`Synthesized "${message}" with voice "${voice}"`);
         this.emit("sendAudioBlob", audioBlob);
       }
     });

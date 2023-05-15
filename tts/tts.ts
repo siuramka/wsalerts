@@ -1,4 +1,5 @@
 import { ElevenlabsAPI } from '../api/Elevenlabs'
+import { StreamlabsAPI } from '../api/Streamlabs'
 import { UberduckAPI } from '../api/Uberduck'
 const { Utils } = require("../tts/Utils")
 
@@ -6,6 +7,19 @@ export class Tts {
     static async getSynthesizedAudioBase64(message: any, voice: any) {
         try {
             const audioBlob = await ElevenlabsAPI.generateSpeechData(message, voice)
+            console.log("Synthesizing...")
+            if (audioBlob) //necessary check or no?
+                return audioBlob
+        } catch (error) {
+            console.log('Error in getting audio blob => ')
+            console.log(error)
+            return null
+        }
+    
+    }
+    static async getSynthesizedAudioStreamlabs(message: any, voice: any) {
+        try {
+            const audioBlob = await StreamlabsAPI.getSpeechData(message, voice)
             console.log("Synthesizing...")
             if (audioBlob) //necessary check or no?
                 return audioBlob

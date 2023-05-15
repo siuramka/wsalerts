@@ -1,3 +1,4 @@
+import DatabaseConfig from "./database/DatabaseConfig";
 import { Server } from "./sockets/ioClient"
 import { TwitchClient } from "./twitch/twitchClient"
 
@@ -6,3 +7,6 @@ client.connect()
 
 const server = new Server(3333)
 server.start()
+
+const db = DatabaseConfig.getInstance()
+console.log(db.getConfig())
