@@ -16,15 +16,19 @@ class DatabaseConfig {
     this.init();
   }
 
-  static getInstance() {
+  public static getInstance() {
     if (this._instance) {
       return this._instance;
     } else {
-      this._instance = new DatabaseConfig();
-      return this._instance;
+
     }
   }
 
+  public static refreshInstance() {
+    this._instance = new DatabaseConfig();
+    return this._instance;
+  }
+  
   private async init() {
     try {
       await this.prisma.$connect();
