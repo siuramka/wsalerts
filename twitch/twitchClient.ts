@@ -23,15 +23,12 @@ export class TwitchClient implements ITwitchClient {
   private client: tmi.Client;
   private options: tmi.Options;
   private chatEventsHandler: IChatEventsHandler;
-  private db: DatabaseConfig;
-
   constructor() {
     // Could insert config into params
     this.setupOptions();
     this.client = this.initClient(this.getOptions());
     //should I add this here or do it the other way arround: add GetClient, and get client in the handler class
     this.chatEventsHandler = new ChatEventsHandler(this.client);
-    this.db = DatabaseConfig.getInstance();
   }
 
   private initClient(options: tmi.Options): tmi.Client {
@@ -71,7 +68,7 @@ export class TwitchClient implements ITwitchClient {
         reconnect: true,
       },
       identity: {
-        username: this.db.getConfig().TwitchSetting.botUsername,
+        username: config.USERNAME_OAUTH,
         password: OAUTH,
       },
       channels: CHANNEL,
