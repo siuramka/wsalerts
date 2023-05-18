@@ -3,7 +3,7 @@ import { IReadable } from "../base/interface/IReadable";
 import { IWritable } from "../base/interface/IWritable";
 import DatabaseConfig from "../../DatabaseConfig";
 
-class TwitchSettingRepository implements IReadable, IWritable {
+class TwitchSettingRepository implements IReadable {
   private prisma: PrismaClient;
   constructor() {
     this.prisma = DatabaseConfig.getInstance().getPrismaClient();
