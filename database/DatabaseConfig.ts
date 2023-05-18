@@ -30,13 +30,7 @@ class DatabaseConfig {
   }
 
   private async init() {
-    try {
       await this.prisma.$connect();
-      console.log("Database connected!");
-    } catch (error) {
-      console.error("Error in Initializing Database instance!");
-      console.error(error);
-    }
   }
 
   public getPrismaClient(): PrismaClient {
