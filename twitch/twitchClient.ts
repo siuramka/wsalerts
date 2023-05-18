@@ -2,6 +2,7 @@ import tmi from "tmi.js";
 import { config } from "../configs/configs";
 import { CommandFactory, parsedCommand } from "./factory/commandFactory";
 import { RedeemFactory } from "./factory/redeemFactory";
+import DatabaseConfig from "../database/DatabaseConfig";
 
 const USERNAME_OAUTH = config.USERNAME_OAUTH;
 const AUTHORIZED_USERS = config.AUTHORIZED_USERS;
@@ -22,6 +23,7 @@ export class TwitchClient implements ITwitchClient {
   private client: tmi.Client;
   private options: tmi.Options;
   private chatEventsHandler: IChatEventsHandler;
+  private db: DatabaseConfig;
 
   constructor() {
     // Could insert config into params
@@ -29,6 +31,7 @@ export class TwitchClient implements ITwitchClient {
     this.client = this.initClient(this.getOptions());
     //should I add this here or do it the other way arround: add GetClient, and get client in the handler class
     this.chatEventsHandler = new ChatEventsHandler(this.client);
+    this.db = DatabaseConfig.getInstance();
   }
 
   private initClient(options: tmi.Options): tmi.Client {
@@ -68,7 +71,7 @@ export class TwitchClient implements ITwitchClient {
         reconnect: true,
       },
       identity: {
-        username: USERNAME_OAUTH,
+        username: this.db.getConfig().TwitchSetting.botUsername,
         password: OAUTH,
       },
       channels: CHANNEL,
@@ -95,7 +98,7 @@ interface IChatEventsHandler {
 
 class ChatEventsHandler implements IChatEventsHandler {
   private _client: tmi.Client;
-
+  private db: DatabaseConfig;
   constructor(client: tmi.Client) {
     this._client = client;
     this.setupChatListener()

@@ -50,5 +50,4 @@ model TwitchAuthorizedUser {
   username String
   twitch   TwitchSetting @relation(fields: [twitchId], references: [id])
   twitchId Int
-  isBot    Boolean       @default(false)
 }

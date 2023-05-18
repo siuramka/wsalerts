@@ -8,4 +8,5 @@ client.connect()
 const server = new Server(3333)
 server.start()
 
+//create db instance
 const db = DatabaseConfig.getInstance()

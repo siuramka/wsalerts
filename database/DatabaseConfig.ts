@@ -1,15 +1,15 @@
 import { PrismaClient, TwitchSetting, Provider } from "@prisma/client";
+//prisma orm is different from traditiona orms, cant extend classes etc: https://github.com/prisma/prisma/discussions/3929
+//so I use a non generic repository pattern instead, which is not as elegant but it works.
 
-interface IConfig {
-  TwitchSetting: TwitchSetting;
-  Provider: Provider;
-}
 
 //singleton design pattern(not anymore since I added refreshInstance?)
+// using singleton because i'll want to refresh the instance of the database and restart/reconnect twitch client (and the express server maybe)
+// with updated database settings.
+
 class DatabaseConfig {
   private static _instance: DatabaseConfig;
   private prisma: PrismaClient;
-  private config: IConfig;
 
   private constructor() {
     this.prisma = new PrismaClient();
@@ -32,29 +32,15 @@ class DatabaseConfig {
   private async init() {
     try {
       await this.prisma.$connect();
-      console.log("Database connected");
-
-      const twitchSettingWithAuthorizedUsers =
-        await this.prisma.twitchSetting.findFirst({
-          include: { twitchAuthorizedUsers: true },
-        });
-      const providerWithVoices = await this.prisma.provider.findFirst({
-        include: { voices: true },
-      });
-
-      this.config = {
-        TwitchSetting: twitchSettingWithAuthorizedUsers!,
-        Provider: providerWithVoices!,
-      };
-      console.log(this.config);
+      console.log("Database connected!");
     } catch (error) {
-      console.error("Error in Initializing Config from Database!");
+      console.error("Error in Initializing Database instance!");
       console.error(error);
     }
   }
 
-  public getConfig() {
-    return this.config;
+  public getPrismaClient(): PrismaClient {
+    return this.prisma;
   }
 }
 
