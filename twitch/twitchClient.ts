@@ -23,9 +23,6 @@ export class TwitchClient implements ITwitchClient {
   private client: tmi.Client;
   private options: tmi.Options;
   private chatEventsHandler: IChatEventsHandler;
-  constructor() {
-    //should I add this here or do it the other way arround: add GetClient, and get client in the handler class
-  }
 
   public async initialize() {
     const twitchSettingRepository = new TwitchSettingRepository();
