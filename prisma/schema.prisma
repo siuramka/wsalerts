@@ -42,12 +42,14 @@ model Role {
 model TwitchSetting {
   id                    Int                    @id @default(autoincrement())
   botUsername           String
+  botOauth              String
   twitchAuthorizedUsers TwitchAuthorizedUser[]
 }
 
 model TwitchAuthorizedUser {
-  id       Int           @id @default(autoincrement())
-  username String
-  twitch   TwitchSetting @relation(fields: [twitchId], references: [id])
-  twitchId Int
+  id                  Int           @id @default(autoincrement())
+  username            String
+  twitch              TwitchSetting @relation(fields: [twitchId], references: [id])
+  twitchId            Int
+  listenToUserChannel Boolean
 }

@@ -9,7 +9,18 @@ export class TwitchSettingRepository {
     this.prisma = DatabaseConfig.getInstance().getPrismaClient();
   }
 
-  public async getFirst(): Promise<TwitchSetting | null> {
-    return await this.prisma.twitchSetting.findFirst();
+  public getFirst() {
+    //prisma findFirst where id = 1 and select included twitchAuthorizedUsers where listenToUserChannel is true
+    const query = this.prisma.twitchSetting.findFirst({
+      where: { id: 1 },
+      include: {
+        twitchAuthorizedUsers: {
+          where: { 
+            listenToUserChannel: true
+          }
+        }
+      }
+    });
+    return query;
   }
 }

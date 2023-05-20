@@ -2,7 +2,7 @@ import tmi from "tmi.js";
 import { config } from "../configs/configs";
 import { CommandFactory, parsedCommand } from "./factory/commandFactory";
 import { RedeemFactory } from "./factory/redeemFactory";
-import DatabaseConfig from "../database/DatabaseConfig";
+import { TwitchSettingRepository } from "../database/repository/TwitchSetting/TwitchSettingRepository";
 
 const USERNAME_OAUTH = config.USERNAME_OAUTH;
 const AUTHORIZED_USERS = config.AUTHORIZED_USERS;
@@ -11,10 +11,10 @@ const EVENTS = {};
 
 interface ITwitchClient {
   getOptions: () => tmi.Options;
-  connect: () => Promise<[string,number]>;
-  disconnect: () => Promise<[string,number]>;
+  connect: () => Promise<[string, number]>;
+  disconnect: () => Promise<[string, number]>;
   reconnect: () => Promise<string>;
-  updateOptions: (options: tmi.Options) => void;
+  initialize: () => void;
 }
 
 interface IConfigTwitchClient {}
@@ -24,43 +24,14 @@ export class TwitchClient implements ITwitchClient {
   private options: tmi.Options;
   private chatEventsHandler: IChatEventsHandler;
   constructor() {
-    // Could insert config into params
-    this.setupOptions();
-    this.client = this.initClient(this.getOptions());
     //should I add this here or do it the other way arround: add GetClient, and get client in the handler class
-    this.chatEventsHandler = new ChatEventsHandler(this.client);
   }
 
-  private initClient(options: tmi.Options): tmi.Client {
-    return new tmi.Client(options);
-  }
+  public async initialize() {
+    const twitchSettingRepository = new TwitchSettingRepository();
+    const twitchSetting = await twitchSettingRepository.getFirst();
 
-  public async connect(): Promise<[string,number]> {
-    return await this.client.connect();
-  }
-
-  public async disconnect(): Promise<[string,number]> {
-    return await this.client.disconnect();
-  }
-
-  public async reconnect(): Promise<string> {
-    await this.disconnect();
-    await this.connect();
-    return "Reconnected to twitch client!"
-  }
-
-  public updateOptions(options: tmi.Options): void {
-    this.options = options;
-  }
-
-  /**
-   * I don't like this approach, need to implement a better way of utilizing the config class, then update where the class is used.
-   */
-  private setupOptions(): void {
-    const OAUTH = config.OAUTH;
-    const USERNAME_OAUTH = config.USERNAME_OAUTH;
-    const CHANNEL = config.CHANNEL;
-    this.options = {
+    const clientOptions: tmi.Options = {
       options: {
         debug: true,
       },
@@ -68,11 +39,33 @@ export class TwitchClient implements ITwitchClient {
         reconnect: true,
       },
       identity: {
-        username: config.USERNAME_OAUTH,
-        password: OAUTH,
+        username: twitchSetting?.botUsername,
+        password: twitchSetting?.botOauth,
       },
-      channels: CHANNEL,
+      channels: twitchSetting?.twitchAuthorizedUsers.map(x => x.username),
     };
+
+    this.options = clientOptions;
+    this.client = this.initClient(this.options);
+    this.chatEventsHandler = new ChatEventsHandler(this.client);
+  }
+
+  private initClient(options: tmi.Options): tmi.Client {
+    return new tmi.Client(options);
+  }
+
+  public async connect(): Promise<[string, number]> {
+    return await this.client.connect();
+  }
+
+  public async disconnect(): Promise<[string, number]> {
+    return await this.client.disconnect();
+  }
+
+  public async reconnect(): Promise<string> {
+    await this.disconnect();
+    await this.connect();
+    return "Reconnected to twitch client!";
   }
 
   public getOptions(): tmi.Options {
@@ -87,60 +80,58 @@ export class TwitchClient implements ITwitchClient {
 
 interface IChatEventsHandler {
   setupChatListener: () => void;
-  setupCheerListener: () => void
-  setupRadeemListener: () => void
+  setupCheerListener: () => void;
+  setupRadeemListener: () => void;
 }
-
-
 
 class ChatEventsHandler implements IChatEventsHandler {
   private _client: tmi.Client;
-  private db: DatabaseConfig;
   constructor(client: tmi.Client) {
     this._client = client;
-    this.setupChatListener()
-    this.setupRadeemListener()
+    this.setupChatListener();
+    this.setupRadeemListener();
   }
 
   setupRadeemListener() {
-    this._client.on("redeem", () => {
-    })
+    this._client.on("redeem", () => {});
   }
 
   setupCheerListener(): void {
-    this._client.on("cheer", () => {
-
-    })
+    this._client.on("cheer", () => {});
   }
 
   setupChatListener(): void {
-    this._client.on("chat", (channel, user: tmi.UserNoticeState, message, self) => {
+    this._client.on(
+      "chat",
+      (channel, user: tmi.UserNoticeState, message, self) => {
+        let commandName = message.split(" ")[0];
+        console.log("================= change later ====================");
+        const isUserAuthorized = AUTHORIZED_USERS?.includes(
+          user.username.toLowerCase()
+        );
+        try {
+          //logic for this:https://www.baeldung.com/java-replace-if-statements
+          //https://refactoring.guru/design-patterns/command/typescript/example
+          //command pattern
+          if (user.username === USERNAME_OAUTH) {
+            console.log(`${user.username}: ${message}`);
+            commandName = "!BotCommand";
+          }
 
-      let commandName = message.split(" ")[0];
-      console.log("================= change later ====================");
-      const isUserAuthorized = AUTHORIZED_USERS?.includes(user.username.toLowerCase())
-      try {
-        //logic for this:https://www.baeldung.com/java-replace-if-statements
-        //https://refactoring.guru/design-patterns/command/typescript/example
-        //command pattern
-        if (user.username === USERNAME_OAUTH) {
-          console.log(`${user.username}: ${message}`);
-          commandName = "!tts"
+          if (isUserAuthorized) {
+            const targetCommand = CommandFactory.getOperation(commandName);
+            //should only be one method maybe
+            targetCommand?.parse(user, message);
+            targetCommand?.handle();
+          }
+        } catch (error) {
+          console.log(`Error in chat parsing! => `);
+          console.log(error);
         }
-
-        if (isUserAuthorized) {
-          const targetCommand = CommandFactory.getOperation(commandName);
-          //should only be one method maybe
-          targetCommand?.parse(user, message);
-          targetCommand?.handle();
-        }
-      } catch (error) {
-        console.log(`Error in chat parsing! => `);
-        console.log(error);
       }
-    });
+    );
   }
-  
+
   // public setupChatListener(): void {
   //   this._client.on("chat", (channel, user, message, self) => {
   //     const commandName = message.split(" ")[0]

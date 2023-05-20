@@ -1,12 +1,14 @@
 import DatabaseConfig from "./database/DatabaseConfig";
-import { Server } from "./sockets/ioClient"
-import { TwitchClient } from "./twitch/twitchClient"
+import { Server } from "./sockets/ioClient";
+import { TwitchClient } from "./twitch/twitchClient";
 
-const client = new TwitchClient();
-client.connect()
+(async () => {
+  const server = new Server(3333);
+  await server.start();
+  
+  const client = new TwitchClient();
+  await client.initialize();
+  await client.connect();
+})();
 
-const server = new Server(3333)
-server.start()
-
-//create db instance
-const db = DatabaseConfig.getInstance()
+const db = DatabaseConfig.getInstance();

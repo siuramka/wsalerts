@@ -8,7 +8,7 @@ import { PrismaClient, TwitchSetting, Provider } from "@prisma/client";
 // with updated database settings.
 
 class DatabaseConfig {
-  private static _instance: DatabaseConfig;
+  private static _instance: DatabaseConfig | null;
   private prisma: PrismaClient;
 
   private constructor() {

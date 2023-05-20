@@ -17,6 +17,31 @@ export type parsedCommand = {
     voice: string | undefined
 }
 
+class BotCommand implements Command {
+    private _message: parsedCommand
+
+    constructor(){
+        const initData = {
+            username: undefined,
+            messageContent: "",
+            voice: undefined   
+        }
+        this._message = initData
+    }
+
+    parse(user: tmi.ChatUserstate, message: string): void {
+        this._message.messageContent = message.replace("!tts ","")
+        this._message.username = user.username
+        this._message.voice = undefined
+    }
+
+    handle(): void {
+        const synthMessage = `${this._message.username} said. ${this._message.messageContent}`
+        EventsHandler.emit("synthesizeAudioUberduck", synthMessage);
+    }
+}
+
+
 class TtsCommand implements Command {
     private _message: parsedCommand
 
@@ -47,6 +72,7 @@ export class CommandFactory {
     static {
         this.commandMap = new Map<string, Command>()
         this.commandMap.set("!tts", new TtsCommand)
+        this.commandMap.set("!BotCommand", new BotCommand)
     }
 
     public static getOperation(commandName: string): Command | undefined {
