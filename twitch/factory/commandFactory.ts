@@ -62,7 +62,7 @@ class TtsCommand implements Command {
 
     handle(): void {
         const synthMessage = `${this._message.username} said. ${this._message.messageContent}`
-        EventsHandler.emit("synthesizeAudioUberduck", synthMessage);
+        EventsHandler.emit("synthesizeUberduck", synthMessage);
     }
 }
 
