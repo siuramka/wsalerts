@@ -16,7 +16,7 @@ export class UtilsVoice {
     }
   
     static async getRandomVoiceUberduck() {
-        const query = await voiceRepository.getProviderWithVoices("uberduck");
+        const query = await voiceRepository.getProviderWithVoicesAndSelected("uberduck");
         return query?.voices?.[(Math.random() * query?.voices?.length) | 0].name
     }
   
