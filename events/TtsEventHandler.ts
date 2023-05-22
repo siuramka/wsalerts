@@ -5,7 +5,7 @@ import { UtilsVoice } from "../tts/UtilsVoice"
 
 const provider = "uberduck";
 
-class EventHandler extends EventEmitter {
+class TtsEventHandler extends EventEmitter {
   private twitchSettingRepository: TwitchSettingRepository;
   constructor() {
     super();
@@ -21,7 +21,7 @@ class EventHandler extends EventEmitter {
     //add voice to synthesize
     this.on("synthesizeUberduck", async (message: any, voice: any) => {
       console.log(`[Uberduck] Got synthesize request "${message}"!`);
-      let voiceData = voice || UtilsVoice.getRandomVoiceUberduck();
+      let voiceData = voice || await UtilsVoice.getRandomVoiceUberduck();
       const audioPath = await Tts.getSynthesizedAudioUrl(message, voiceData);
       if (audioPath) {
         console.log(`Synthesized "${message}" with voice "${voiceData}"`);
@@ -50,7 +50,7 @@ class EventHandler extends EventEmitter {
   }
 }
 
-const eventHandler = new EventHandler();
+const eventHandler = new TtsEventHandler();
 
 (async () => {
   await eventHandler.initialize();

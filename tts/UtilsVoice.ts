@@ -1,13 +1,11 @@
 import { ElevenlabsAPI } from "../api/Elevenlabs";
+import { VoiceRepository } from "../database/repository/TwitchSetting/VoiceRepository";
 
 const voicesUberduck = require("../configs/voices_uberduck");
 const voicesElevenlabs = require("../configs/voices_11labs");
+const voiceRepository = new VoiceRepository();
 
 export class UtilsVoice {
-
-    static initialize() {
-  
-    }
   
     static async getVoiceIdFromVoiceName(voice: any) {
       const voiceListJson = await ElevenlabsAPI.getUserVoices();
@@ -17,8 +15,9 @@ export class UtilsVoice {
       return foundEntry.voice_id
     }
   
-    static getRandomVoiceUberduck(): string {
-      return voicesUberduck.voiceList[(Math.random() * voicesUberduck.voiceList.length) | 0];
+    static async getRandomVoiceUberduck() {
+        const query = await voiceRepository.getProviderWithVoices("uberduck");
+        return query?.voices?.[(Math.random() * query?.voices?.length) | 0].name
     }
   
     static getRandomVoiceElevenlabs(): string {
