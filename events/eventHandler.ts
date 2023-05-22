@@ -1,20 +1,27 @@
 import EventEmitter from "events";
-import { Tts } from "../tts/Tts"
-const { Utils } = require("../tts/Utils");
+import { Tts } from "../tts/Tts";
+import { TwitchSettingRepository } from "../database/repository/TwitchSetting/TwitchSettingRepository";
+import { UtilsVoice } from "../tts/UtilsVoice"
 
-const provider = "uberduck"
+const provider = "uberduck";
 
 class EventHandler extends EventEmitter {
-
-  constructor(){
-    super()
-    this.setupSynthesizeListeners()
+  private twitchSettingRepository: TwitchSettingRepository;
+  constructor() {
+    super();
   }
 
-  private setupSynthesizeListeners(): void {
-    this.on("synthesizeUberduck" , async (message: any, voice: any) => {
+  public async initialize() {
+    this.twitchSettingRepository = new TwitchSettingRepository();
+    await this.setupSynthesizeListeners();
+  }
+  
+  private async setupSynthesizeListeners(): Promise<void> {
+    const twitchSetting = await this.twitchSettingRepository.getFirst();
+    //add voice to synthesize
+    this.on("synthesizeUberduck", async (message: any, voice: any) => {
       console.log(`[Uberduck] Got synthesize request "${message}"!`);
-      let voiceData = voice || Utils.getRandomVoiceUberduck();
+      let voiceData = voice || UtilsVoice.getRandomVoiceUberduck();
       const audioPath = await Tts.getSynthesizedAudioUrl(message, voiceData);
       if (audioPath) {
         console.log(`Synthesized "${message}" with voice "${voiceData}"`);
@@ -24,7 +31,7 @@ class EventHandler extends EventEmitter {
 
     this.on("synthesizeElevenlabs", async (message: any, voice: any) => {
       console.log(`[Elevenlabs] Got synthesize request "${message}"!`);
-      let voiceData = voice || Utils.getRandomVoiceElevenlabs();
+      let voiceData = voice || UtilsVoice.getRandomVoiceElevenlabs();
       const audioBlob = await Tts.getSynthesizedAudioBase64(message, voiceData);
       if (audioBlob) {
         console.log(`Synthesized "${message}" with voice "${voiceData}"`);
@@ -43,5 +50,10 @@ class EventHandler extends EventEmitter {
   }
 }
 
-export default new EventHandler();
+const eventHandler = new EventHandler();
 
+(async () => {
+  await eventHandler.initialize();
+})();
+
+export = eventHandler;

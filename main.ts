@@ -1,5 +1,5 @@
 import DatabaseConfig from "./database/DatabaseConfig";
-import { Server } from "./sockets/ioClient";
+import { Server } from "./sockets/Server";
 import { TwitchClient } from "./twitch/twitchClient";
 import { TwitchClientEventsHandler } from "./twitch/twitchClientEventsHandler";
 

@@ -1,4 +1,4 @@
-import { ApiBase } from "./ApiBase";
+import { ApiBase } from "./base/ApiBase";
 
 class Streamlabs extends ApiBase {
     private _apiHeaders: any

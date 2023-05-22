@@ -1,6 +1,6 @@
 import { ApiConfigType } from "../configs/configs";
 import { _UberduckConfig } from "../configs/configs";
-import { ApiBase } from "./ApiBase";
+import { ApiBase } from "./base/ApiBase";
 
 
 class Uberduck extends ApiBase {

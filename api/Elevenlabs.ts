@@ -1,5 +1,5 @@
 import { ApiConfigType, _ElevenlabsConfig } from "../configs/configs";
-import { ApiBase } from "./ApiBase";
+import { ApiBase } from "./base/ApiBase";
 
 
 class Elevenlabs extends ApiBase {

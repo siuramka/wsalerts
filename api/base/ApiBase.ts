@@ -4,7 +4,7 @@
 // https://github.com/apollographql/datasource-rest/blob/main/src/RESTDataSource.ts
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios"
-import { ApiConfigType } from "../configs/configs"
+import { ApiConfigType } from "../../configs/configs"
 
 
 

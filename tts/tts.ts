@@ -1,7 +1,7 @@
 import { ElevenlabsAPI } from '../api/Elevenlabs'
 import { StreamlabsAPI } from '../api/Streamlabs'
 import { UberduckAPI } from '../api/Uberduck'
-const { Utils } = require("../tts/Utils")
+import { Utils } from '../tts/Utils'
 
 export class Tts {
     static async getSynthesizedAudioBase64(message: any, voice: any) {
