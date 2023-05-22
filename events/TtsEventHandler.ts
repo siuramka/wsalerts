@@ -21,7 +21,7 @@ class TtsEventHandler extends EventEmitter {
     //add voice to synthesize
     this.on("synthesizeUberduck", async (message: any, voice: any) => {
       console.log(`[Uberduck] Got synthesize request "${message}"!`);
-      let voiceData = voice || await UtilsVoice.getRandomVoiceUberduck();
+      let voiceData = voice || await UtilsVoice.getRandomVoice("uberduck");
       const audioPath = await Tts.getSynthesizedAudioUrl(message, voiceData);
       if (audioPath) {
         console.log(`Synthesized "${message}" with voice "${voiceData}"`);
@@ -31,7 +31,7 @@ class TtsEventHandler extends EventEmitter {
 
     this.on("synthesizeElevenlabs", async (message: any, voice: any) => {
       console.log(`[Elevenlabs] Got synthesize request "${message}"!`);
-      let voiceData = voice || UtilsVoice.getRandomVoiceElevenlabs();
+      let voiceData = voice || UtilsVoice.getRandomVoice("elevenlabs");
       const audioBlob = await Tts.getSynthesizedAudioBase64(message, voiceData);
       if (audioBlob) {
         console.log(`Synthesized "${message}" with voice "${voiceData}"`);
