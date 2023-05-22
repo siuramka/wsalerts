@@ -1,4 +1,4 @@
-import EventsHandler from "../../events/eventHandler";
+import EventsHandler from "../../events/TtsEventHandler";
 import tmi from "tmi.js";
 
 interface Command {

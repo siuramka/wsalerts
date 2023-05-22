@@ -1,20 +1,26 @@
 import http from "http";
 import { Server as SocketIOServer, Socket } from "socket.io";
 import { App } from "../web/webServer";
-import eventHandler from "../events/eventHandler";
+import eventHandler from "../events/TtsEventHandler";
+import { SocketEventHandler } from "../events/SocketEventHandler";
 
 export class Server {
   private server: http.Server;
   private io: SocketIOServer;
   private port: number;
   private app: App;
+  private socketEventHandler: SocketEventHandler;
 
   constructor(port: number) {
     this.port = port;
     this.app = new App();
     this.createServer();
     this.createSocket();
+    this.setupEventHandler();
     
+  }
+  private setupEventHandler() {
+    this.socketEventHandler = new SocketEventHandler(this.io);
   }
 
   private createServer(): void {
@@ -23,18 +29,6 @@ export class Server {
 
   private createSocket(): void {
     this.io = new SocketIOServer(this.server);
-    this.io.on("connection", (socket: Socket) => {
-      console.log("A client connected");  
-      socket.on("disconnect", () => {
-        console.log("A client disconnected");
-      });
-    });
-    eventHandler.on("sendAudioUrl", (audioLink: any) => {
-      this.io.emit("data", audioLink);
-    });
-    eventHandler.on("sendAudioBlob", (audioBlob: any) => {
-      this.io.emit("data", audioBlob);
-    });
   }
 
   public start(): void {
