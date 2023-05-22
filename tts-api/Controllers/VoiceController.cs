@@ -45,7 +45,8 @@ namespace tts_api.Controllers
                 }
                 return Ok(tempVoice);
             }
-
         }
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutVoice(int id, )
     }
 }

@@ -24,6 +24,22 @@ namespace tts_api
                     .EnableSensitiveDataLogging()
                     .EnableDetailedErrors()
             );
+            //const daaa = builder.Configuration.GetSection("")
+            //builder.Services.AddCors(options =>
+            //{
+            //    options.AddPolicy("CORSPolicy",
+            //        builder =>
+            //        {
+            //            builder.WithOrigins(
+            //                    appSettingsSection
+            //                      .Get<AppSettings>()
+            //                      .AllowedOrigins
+            //                      .Split(","))
+            //                .AllowAnyHeader()
+            //                .AllowAnyMethod()
+            //                .AllowCredentials();
+            //        });
+            //});
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -38,9 +54,13 @@ namespace tts_api
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseCors(options =>
+            options.WithOrigins("http://localhost:5173")
+            .AllowAnyMethod()
+            .AllowAnyHeader());
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 
