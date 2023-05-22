@@ -2,7 +2,6 @@ import { ElevenlabsAPI } from "../api/Elevenlabs";
 import { VoiceRepository } from "../database/repository/TwitchSetting/VoiceRepository";
 type provider = "uberduck" | "elevenlabs" | "streamlabs";
 
-const voicesElevenlabs = require("../configs/voices_11labs");
 const voiceRepository = new VoiceRepository();
 
 export class UtilsVoice {
