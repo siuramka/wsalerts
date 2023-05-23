@@ -1,7 +1,9 @@
-﻿namespace tts_api.Manager
+﻿using tts_api.Data.Models.DTO;
+
+namespace tts_api.Manager
 {
     public interface IAuthManager
     {
-        public bool IsAuthenticated();
+        public DiscordUser GetDiscordUser();
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Security.Claims;
+using tts_api.Data.Models.DTO;
 
 namespace tts_api.Manager
 {
@@ -10,16 +12,20 @@ namespace tts_api.Manager
         {
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
-        public bool IsAuthenticated()
+        public DiscordUser GetDiscordUser()
         {
-            var userClaims = _httpContextAccessor.HttpContext.User.Claims.ToList();
+            var userId = _httpContextAccessor.HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            var name = _httpContextAccessor.HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Name).Value;
+            var avatarHash = _httpContextAccessor.HttpContext.User.Claims.First(c => c.Type == "urn:discord:avatar:hash").Value;
+            var discriminator = _httpContextAccessor.HttpContext.User.Claims.First(c => c.Type == "urn:discord:user:discriminator").Value;
 
-            if(userClaims.Count > 1)
-            {
-                return true;
-            }
+            DiscordUser discordUser = new DiscordUser();
+            discordUser.Name = name;
+            discordUser.AvatarHash = avatarHash;
+            discordUser.Discriminator = discriminator;
+            discordUser.UserId = userId;
 
-            return false;
+            return discordUser;
         }
 
     }
