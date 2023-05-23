@@ -410,5 +410,5 @@ obj/
 
 # End of https://www.toptal.com/developers/gitignore/api/csharp,dotnetcore
 
-./appsettings.json
-./appsettings.Development.json
+appsettings.json
+appsettings.Development.json

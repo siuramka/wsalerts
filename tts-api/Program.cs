@@ -1,6 +1,9 @@
 
 using Microsoft.EntityFrameworkCore;
+using AspNet.Security.OAuth.Discord;
 using tts_api.Data.Database;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using tts_api.Manager;
 
 namespace tts_api
 {
@@ -13,7 +16,7 @@ namespace tts_api
             builder.Services.AddControllers();
 
             var serverVersion = new MariaDbServerVersion(new Version(10, 4, 24));
-            var connectionString = builder.Configuration.GetConnectionString("MySqlDatabase");
+            var connectionString = builder.Configuration.GetConnectionString("MySqlDatabase") ?? throw new Exception("mariadb coonection string missing");
 
             builder.Services.AddDbContext<ApplicationDbContext>(
                 dbContextOptions => dbContextOptions
@@ -24,24 +27,28 @@ namespace tts_api
                     .EnableSensitiveDataLogging()
                     .EnableDetailedErrors()
             );
-            //const daaa = builder.Configuration.GetSection("")
-            //builder.Services.AddCors(options =>
-            //{
-            //    options.AddPolicy("CORSPolicy",
-            //        builder =>
-            //        {
-            //            builder.WithOrigins(
-            //                    appSettingsSection
-            //                      .Get<AppSettings>()
-            //                      .AllowedOrigins
-            //                      .Split(","))
-            //                .AllowAnyHeader()
-            //                .AllowAnyMethod()
-            //                .AllowCredentials();
-            //        });
-            //});
+
+            builder.Services.AddAuthentication(opt =>
+            {
+                opt.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                opt.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = DiscordAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddCookie()
+            .AddDiscord(options =>
+            {
+                options.ClientId = builder.Configuration["DiscordOAuth:ClientId"] ?? throw new Exception("Discord Client Id missing");
+                options.ClientSecret = builder.Configuration["DiscordOAuth:ClientSecret"] ?? throw new Exception("Discord Secretmissing");
+                options.SaveTokens = true;
+            });
 
             builder.Services.AddControllers();
+
+            builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddTransient<IAuthManager, AuthManager>();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

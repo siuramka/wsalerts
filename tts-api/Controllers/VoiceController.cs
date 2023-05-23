@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using tts_api.Data.Database;
 using tts_api.Data.Models;
@@ -6,6 +7,7 @@ using tts_api.Data.Models.DTO;
 
 namespace tts_api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class VoiceController : ControllerBase
