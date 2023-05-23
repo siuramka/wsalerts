@@ -18,7 +18,7 @@ namespace tts_api.Controllers.Auth
         [HttpGet]
         public IActionResult Login(string returnUrl = "/")
         {
-            if (!_authManager.IsAuthenticated())
+            if (!HttpContext.User.Identity.IsAuthenticated)
             {
                 return Challenge(new AuthenticationProperties { RedirectUri = returnUrl }, "Discord");
             }
@@ -33,7 +33,7 @@ namespace tts_api.Controllers.Auth
         {
             try
             {
-                if(_authManager.IsAuthenticated())
+                if(HttpContext.User.Identity.IsAuthenticated)
                 {
                     await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                     return Ok();
