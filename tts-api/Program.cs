@@ -6,6 +6,7 @@ using tts_api.Manager;
 using tts_api.Authorization;
 using tts_api.Services;
 using tts_api.Helpers;
+using tts_api.Clients;
 
 namespace tts_api
 {

@@ -3,6 +3,7 @@
 using Microsoft.AspNetCore.Mvc;
 using tts_api.Authorization;
 using tts_api.Data.Models.DTO.Accounts;
+using tts_api.Data.Models.DTO.Discord;
 using tts_api.Services;
 
 [ApiController]

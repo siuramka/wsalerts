@@ -1,4 +1,4 @@
-﻿namespace tts_api.Data.Models.DTO.Accounts
+﻿namespace tts_api.Data.Models.DTO.Discord
 {
     public class DiscordLoginRequest
     {
