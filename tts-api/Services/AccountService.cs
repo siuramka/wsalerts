@@ -7,7 +7,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using tts_api.Authorization;
 using tts_api.Data.Database;
-using tts_api.Data.Models.Accounts;
+using tts_api.Data.Models.DTO.Accounts;
 using tts_api.Entities;
 using tts_api.Helpers;
 
@@ -16,7 +16,7 @@ public interface IAccountService
     Task<AuthenticateResponse> Authenticate(DiscordLoginRequest model);
     Task<Account> Update(int id, UpdateRequest model);
     Task Delete(int id);
-    Task<string> Login();
+    Task<DiscordAuth> Login();
 }
 
 public class AccountService : IAccountService
@@ -38,7 +38,7 @@ public class AccountService : IAccountService
         _appSettings = appSettings.Value;
         _configuration = configuration;
     }
-    public async Task<string> Login()
+    public async Task<DiscordAuth> Login()
     {
         var clientId = _configuration["DiscordOAuth:ClientId"];
         var scopes = _configuration["DiscordOAuth:Scopes"];
@@ -58,7 +58,11 @@ public class AccountService : IAccountService
 
         uriBuilder.Query = query.ToString();
         string url = uriBuilder.Uri.ToString();
-        return url;
+
+        var response = new DiscordAuth();
+        response.Uri = url;
+
+        return response;
     }
     public async Task<AuthenticateResponse> Authenticate(DiscordLoginRequest model)
     {

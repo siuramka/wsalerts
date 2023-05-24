@@ -1,4 +1,4 @@
-namespace tts_api.Data.Models.Accounts;
+namespace tts_api.Data.Models.DTO.Accounts;
 
 using System.ComponentModel.DataAnnotations;
 
