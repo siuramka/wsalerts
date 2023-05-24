@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using tts_api.Authorization;
 using tts_api.Data.Database;
 using tts_api.Data.Models;
 

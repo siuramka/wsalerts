@@ -2,7 +2,6 @@
 
 using Microsoft.AspNetCore.Mvc;
 using tts_api.Authorization;
-using tts_api.Data.Models.DTO.Accounts;
 using tts_api.Data.Models.DTO.Discord;
 using tts_api.Services;
 
@@ -30,8 +29,8 @@ public class AccountsController : BaseController
     [HttpGet("authenticate")]
     public async Task<IActionResult> Authenticate(string? code)
     {
-        var aaaa = await _accountService.Authenticate(new DiscordLoginRequest() { code = code });
-        return Ok();
+        var response = await _accountService.Authenticate(new DiscordLoginRequest() { code = code });
+        return Ok(response);
     }
 
     [HttpGet("current")]

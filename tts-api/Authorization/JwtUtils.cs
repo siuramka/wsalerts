@@ -6,12 +6,14 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using tts_api.Data.Database;
+using tts_api.Data.Models.DTO;
+using tts_api.Data.Models.DTO.Discord;
 using tts_api.Entities;
 using tts_api.Helpers;
 
 public interface IJwtUtils
 {
-    public string GenerateJwtToken(Account account);
+    public string GenerateJwtToken(DiscordUserMe user);
     public int? ValidateJwtToken(string? token);
 }
 
@@ -31,14 +33,14 @@ public class JwtUtils : IJwtUtils
             throw new AppException("JWT secret not configured");
     }
 
-    public string GenerateJwtToken(Account account)
+    public string GenerateJwtToken(DiscordUserMe user)
     {
         // generate token that is valid for 15 minutes
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_appSettings.Secret!);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new[] { new Claim("id", account.Id.ToString()) }),
+            Subject = new ClaimsIdentity(new[] { new Claim("id", user.id.ToString()) }),
             Expires = DateTime.UtcNow.AddMinutes(15),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
@@ -66,10 +68,10 @@ public class JwtUtils : IJwtUtils
             }, out SecurityToken validatedToken);
 
             var jwtToken = (JwtSecurityToken)validatedToken;
-            var accountId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
+            var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
 
             // return account id from JWT token if validation successful
-            return accountId;
+            return userId;
         }
         catch
         {

@@ -31,7 +31,6 @@ namespace tts_api.Clients
             var response = await _client.GetJsonAsync<DiscordUserMe>("/api/users/@me");
             return response;
         }
-        record DiscordSingleObject<T>(T Data);
         public void Dispose()
         {
             _client?.Dispose();

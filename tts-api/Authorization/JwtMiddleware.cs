@@ -21,7 +21,7 @@ public class JwtMiddleware
         var accountId = jwtUtils.ValidateJwtToken(token);
         if (accountId != null)
         {
-            // attach account to context on successful jwt validation
+            //attach account to context on successful jwt validation
             //context.Items["Account"] = await dataContext.Accounts.FindAsync(accountId.Value);
         }
 

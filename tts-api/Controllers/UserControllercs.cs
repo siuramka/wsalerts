@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using tts_api.Authorization;
 using tts_api.Manager;
 
 namespace tts_api.Controllers

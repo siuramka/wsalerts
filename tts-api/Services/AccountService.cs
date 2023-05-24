@@ -80,56 +80,10 @@ public class AccountService : IAccountService
         var redirectUrl = _configuration["DiscordOAuth:FrontendCallback"];
         var discordClient = new DiscordClient(model.code, clientId,clientSecret,scopes,redirectUrl);
 
-        var res = await discordClient.GetUser();
-        //var request = new RestRequest("", Method.Post);
-        //request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-        //request.AddParameter("client_id", clientId);
-        //request.AddParameter("client_secret", clientSecret);
-        //request.AddParameter("grant_type", "authorization_code");
-        //request.AddParameter("code", model.code);
-        //request.AddParameter("redirect_uri", redirectUrl);
+        var user = await discordClient.GetUser();
+        var token = _jwtUtils.GenerateJwtToken(user);
 
-        //var response = await client.ExecuteAsync<DiscordOAuthTokenResponse>(request);
-        //if (!response.IsSuccessful)
-        //    throw new AppException(response.ErrorMessage!);
-        //{ "access_token": "qGPN3qenjeu8GSMVM6aTAC6adX0RaR", "expires_in": 604800, "refresh_token": "mshdn3G6ihMonnGicdwWtmm5s7byky", "scope": "identify", "token_type": "Bearer"}
-
-        // get data from response and account from db
-        //var account = _context.Accounts.SingleOrDefault(x => x.FacebookId == facebookId);
-
-        // create new account if first time logging in
-        //if (account == null)
-        //{
-        //    account = new Account
-        //    {
-        //        FacebookId = facebookId,
-        //        Name = name,
-        //        ExtraInfo = $"This is some extra info about {name} that is saved in the API"
-        //    };
-        //    _context.Accounts.Add(account);
-        //    await _context.SaveChangesAsync();
-        //}
-        //var client2 = new RestClient("https://discordapp.com/api/users/@me");
-
-        //var request2 = new RestRequest("", Method.Get);
-        //request2.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-        //request2.AddHeader("Authorization", "Bearer " + response.Data.access_token);
-
-        //var response2 = await client2.ExecuteAsync<DiscordUserMe>(request2);
-
-
-        //DiscordUser discordUser = new DiscordUser();
-        //discordUser.Name = ;
-        //discordUser.AvatarHash = avatarHash;
-        //discordUser.Discriminator = discriminator;
-        //discordUser.UserId = userId;
-
-
-        ////generate jwt token to access secure routes on this API
-        //var token = _jwtUtils.GenerateJwtToken(account);
-
-        //return new AuthenticateResponse(account, token);
-        return null;
+        return new AuthenticateResponse(user, token);
     }
 
     public async Task<Account> Update(int id, UpdateRequest model)

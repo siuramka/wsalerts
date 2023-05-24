@@ -1,22 +1,23 @@
 namespace tts_api.Data.Models.DTO.Accounts;
 
+using tts_api.Data.Models.DTO.Discord;
 using tts_api.Entities;
 
 public class AuthenticateResponse
 {
-    public int Id { get; set; }
-    public long FacebookId { get; set; }
-    public string? Name { get; set; }
-    public string? ExtraInfo { get; set; }
+    public string Id { get; set; }
+    public string Username { get; set; }
+    public string Avatar { get; set; }
+    public string Discriminator { get; set; }
     public string Token { get; set; }
 
 
-    public AuthenticateResponse(Account account, string token)
+    public AuthenticateResponse(DiscordUserMe user, string token)
     {
-        Id = account.Id;
-        FacebookId = account.FacebookId;
-        Name = account.Name;
-        ExtraInfo = account.ExtraInfo;
+        Id = user.id;
+        Username = user.username;
+        Avatar = user.avatar;
+        Discriminator = user.discriminator;
         Token = token;
     }
 }
