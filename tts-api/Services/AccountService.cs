@@ -64,13 +64,26 @@ public class AccountService : IAccountService
 
         return response;
     }
+    //https://discord.com/developers/docs/topics/oauth2 vulnerable to csfr cause no session hehe
     public async Task<AuthenticateResponse> Authenticate(DiscordLoginRequest model)
     {
-        // verify access token with facebook API to authenticate
-        //var client = new RestClient("https://graph.facebook.com/v8.0");
-        //var request = new RestRequest($"me?access_token={model.AccessToken}");
-        //var response = await client.GetAsync(request);
+        var client = new RestClient("https://discordapp.com/api/oauth2/token");
 
+        var clientId = _configuration["DiscordOAuth:ClientId"];
+        var clientSecret = _configuration["DiscordOAuth:ClientSecret"];
+        var scopes = _configuration["DiscordOAuth:Scopes"];
+        var redirectUrl = _configuration["DiscordOAuth:FrontendCallback"];
+
+        var request = new RestRequest("", Method.Post);
+        request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+        request.AddParameter("client_id", clientId);
+        request.AddParameter("client_secret", clientSecret);
+        request.AddParameter("grant_type", "authorization_code");
+        request.AddParameter("code", model.code);
+        request.AddParameter("redirect_uri", redirectUrl);
+
+        var response = await client.ExecuteAsync(request);
+        //{ "access_token": "qGPN3qenjeu8GSMVM6aTAC6adX0RaR", "expires_in": 604800, "refresh_token": "mshdn3G6ihMonnGicdwWtmm5s7byky", "scope": "identify", "token_type": "Bearer"}
         //if (!response.IsSuccessful)
         //    throw new AppException(response.ErrorMessage!);
 

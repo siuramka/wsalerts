@@ -2,12 +2,12 @@
 
 using Microsoft.AspNetCore.Mvc;
 using tts_api.Authorization;
-using tts_api.Data.Models.Accounts;
+using tts_api.Data.Models.DTO.Accounts;
 using tts_api.Services;
 
 [ApiController]
 [Authorize]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class AccountsController : BaseController
 {
     private IAccountService _accountService;
@@ -27,8 +27,9 @@ public class AccountsController : BaseController
 
     [AllowAnonymous]
     [HttpGet("authenticate")]
-    public async Task<IActionResult> Authenticate(string code)
+    public async Task<IActionResult> Authenticate(string? code)
     {
+        var aaaa = await _accountService.Authenticate(new DiscordLoginRequest() { code = code });
         return Ok();
     }
 
@@ -36,19 +37,5 @@ public class AccountsController : BaseController
     public IActionResult GetCurrent()
     {
         return Ok(Account);
-    }
-
-    [HttpPut("current")]
-    public async Task<IActionResult> UpdateCurrent(UpdateRequest model)
-    {
-        var account = await _accountService.Update(Account!.Id, model);
-        return Ok(account);
-    }
-
-    [HttpDelete("current")]
-    public async Task<IActionResult> DeleteCurrent()
-    {
-        await _accountService.Delete(Account!.Id);
-        return Ok();
     }
 }
