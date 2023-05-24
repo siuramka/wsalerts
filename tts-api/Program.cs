@@ -1,9 +1,11 @@
 
 using Microsoft.EntityFrameworkCore;
-using AspNet.Security.OAuth.Discord;
 using tts_api.Data.Database;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using tts_api.Manager;
+using tts_api.Authorization;
+using tts_api.Services;
+using tts_api.Helpers;
 
 namespace tts_api
 {
@@ -12,8 +14,19 @@ namespace tts_api
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                    builder =>
+                      builder.WithOrigins("http://localhost:5106", "https://localhost:5173", "https://discord.com", "http://discord.com")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
 
             builder.Services.AddControllers();
+            builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
             var serverVersion = new MariaDbServerVersion(new Version(10, 4, 24));
             var connectionString = builder.Configuration.GetConnectionString("MySqlDatabase") ?? throw new Exception("mariadb coonection string missing");
@@ -28,20 +41,6 @@ namespace tts_api
                     .EnableDetailedErrors()
             );
 
-            builder.Services.AddAuthentication(opt =>
-            {
-                opt.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                opt.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                opt.DefaultChallengeScheme = DiscordAuthenticationDefaults.AuthenticationScheme;
-            })
-            .AddCookie()
-            .AddDiscord(options =>
-            {
-                options.ClientId = builder.Configuration["DiscordOAuth:ClientId"] ?? throw new Exception("Discord Client Id missing");
-                options.ClientSecret = builder.Configuration["DiscordOAuth:ClientSecret"] ?? throw new Exception("Discord Secretmissing");
-                options.SaveTokens = true;
-            });
-
             builder.Services.AddControllers();
 
             builder.Services.AddRouting(options => options.LowercaseUrls = true);
@@ -53,7 +52,13 @@ namespace tts_api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddScoped<IJwtUtils, JwtUtils>();
+            builder.Services.AddScoped<IAccountService, AccountService>();
+
             var app = builder.Build();
+
+            app.UseCors(MyAllowSpecificOrigins);
+            app.UseRouting();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -61,13 +66,11 @@ namespace tts_api
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            app.UseCors(options =>
-            options.WithOrigins("http://localhost:5173")
-            .AllowAnyMethod()
-            .AllowAnyHeader());
+            // global error handler
+            app.UseMiddleware<ErrorHandlerMiddleware>();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+            // custom jwt auth middleware
+            app.UseMiddleware<JwtMiddleware>();
 
             app.MapControllers();
 
