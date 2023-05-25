@@ -15,15 +15,6 @@ const darkTheme = createTheme({
 });
 
 function App() {
-  const { authenticated, setAuthenticated } = useContext(AuthContext);
-
-  const navigate = useNavigate();
-  const handleLogin = () => {
-    if (!authenticated) {
-      setAuthenticated(true);
-      navigate("/");
-    }
-  };
 
   return (
     <ThemeProvider theme={darkTheme}>

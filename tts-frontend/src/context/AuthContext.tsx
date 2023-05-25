@@ -1,33 +1,41 @@
-import { createContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { createContext, useState } from 'react';
+
+export type User = {
+  discordId: string;
+  username: string;
+  token: string
+};
+
+type AuthContextType = {
+  user: User | null;
+  setUser: (user: User | null) => void;
+};
+
+const initialAuthContext: AuthContextType = {
+  user: null,
+  setUser: () => {},    
+}
 
 type Props = {
     children?: React.ReactNode;
-}
+};
 
-type IAuthContext = {
-    authenticated: boolean;
-    setAuthenticated: (newState: boolean) => void
-}
+const AuthContext = createContext(initialAuthContext);
 
-const initialValue = {
-    authenticated: false,
-    setAuthenticated: () => {}
-}
+const AuthContextProvider = ({ children }: Props) => {
+  const [user, setUser] = useState<User | null>(null);
 
-const AuthContext = createContext<IAuthContext>(initialValue)
 
-const AuthProvider = ({children}: Props) => {
-    //Initializing an auth state with false value (unauthenticated)
-    const [ authenticated, setAuthenticated ] = useState(initialValue.authenticated)
+  const authContextValues: AuthContextType = {
+    user,
+    setUser
+  };
 
-    const navigate = useNavigate()
-  
-    return (
-      <AuthContext.Provider value={{authenticated, setAuthenticated}}>
-        {children}
-      </AuthContext.Provider>
-    )
-  }
-  
-export {  AuthContext, AuthProvider }
+  return (
+    <AuthContext.Provider value={authContextValues}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export { AuthContext, AuthContextProvider };

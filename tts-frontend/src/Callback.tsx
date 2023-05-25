@@ -1,11 +1,11 @@
 import { Navigate, useLocation, useSearchParams } from "react-router-dom";
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { AuthContext } from "./context/AuthContext";
+import { AuthContext, User } from "./context/AuthContext";
 
 const Callback = () => {
   const [searchParams] = useSearchParams();
-  const { authenticated, setAuthenticated } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const code = searchParams.get("code");
 
   if (code == null) {
@@ -14,9 +14,9 @@ const Callback = () => {
   
   useEffect(() => {
     const getData = async () => {
-      const { data } = await axios.get(`api/accounts/authenticate?code=` + code);
+      const { data } = await axios.get<User>(`api/accounts/authenticate?code=` + code);
       if (data) {
-        setAuthenticated(true);
+        setUser(data);
       }
     };
 
@@ -25,11 +25,11 @@ const Callback = () => {
     }
   }, [code]);
 
-  if (authenticated == true) {
+  if (user) {
     return <Navigate to="/" replace />;
   }
 
-  return null; // Return null or any other content you want to render while waiting for the authentication process.
+  return null;
 };
 
 export default Callback;
