@@ -15,6 +15,7 @@ using tts_api.Entities;
 using tts_api.Helpers;
 using tts_api.Data.Models.DTO.Discord;
 using tts_api.Clients;
+using Microsoft.EntityFrameworkCore;
 
 public interface IAccountService
 {
@@ -78,9 +79,29 @@ public class AccountService : IAccountService
         var clientSecret = _configuration["DiscordOAuth:ClientSecret"];
         var scopes = _configuration["DiscordOAuth:Scopes"];
         var redirectUrl = _configuration["DiscordOAuth:FrontendCallback"];
-        var discordClient = new DiscordClient(model.code, clientId,clientSecret,scopes,redirectUrl);
 
-        var user = await discordClient.GetUser();
+        var discordClient = new DiscordClient(model.code, clientId,clientSecret,scopes,redirectUrl);
+        var discordUser = await discordClient.GetUser();
+
+        var user = await _context.User.SingleOrDefaultAsync(x => x.discordId == discordUser.id);
+
+        // create new user in database if doesnt exist
+        if (user == null)
+        {
+            user = new User
+            {
+                discordId = discordUser.id,
+                avatar = discordUser.avatar,
+                discriminator = discordUser.discriminator,
+                username = discordUser.username
+            };
+
+            _context.User.AddAsync(user);
+            await _context.SaveChangesAsync();
+        }
+
+
+
         var token = _jwtUtils.GenerateJwtToken(user);
 
         return new AuthenticateResponse(user, token);

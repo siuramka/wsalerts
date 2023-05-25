@@ -1,6 +1,6 @@
 ﻿namespace tts_api.Data.Models.DTO.Discord
 {
-    public class DiscordUserMe
+    public class DiscordUser
     {
         public string id { get; set; }
         public string username { get; set; }

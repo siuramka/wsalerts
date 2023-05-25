@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using tts_api.Data.Database;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using tts_api.Manager;
 using tts_api.Authorization;
 using tts_api.Services;
 using tts_api.Helpers;
@@ -47,7 +46,6 @@ namespace tts_api
             builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
             builder.Services.AddHttpContextAccessor();
-            builder.Services.AddTransient<IAuthManager, AuthManager>();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

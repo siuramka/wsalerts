@@ -2,6 +2,7 @@ namespace tts_api.Authorization;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using tts_api.Data.Models;
 using tts_api.Entities;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
@@ -17,8 +18,8 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
                 return;
 
             // authorization
-            var account = (Account?)context.HttpContext.Items["Account"];
-            if (account == null)
+            var user = (User?)context.HttpContext.Items["User"];
+            if (user == null )
             {
                 // not logged in or role not authorized
                 context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };

@@ -8,7 +8,7 @@ namespace tts_api.Clients
 {
     public interface IDiscordClient
     {
-        Task<DiscordUserMe> GetUser();
+        Task<DiscordUser> GetUser();
     }
     /// <summary>
     /// https://restsharp.dev/usage.html#recommended-usage
@@ -26,9 +26,9 @@ namespace tts_api.Clients
             var options = new RestClientOptions("https://discord.com") { Authenticator = new DiscordAuthenticator("https://discord.com", clientId, clientSecret, scopes, redirectUrl, discordCode) };
             _client = new RestClient(options);
         }
-        public async Task<DiscordUserMe> GetUser()
+        public async Task<DiscordUser> GetUser()
         {
-            var response = await _client.GetJsonAsync<DiscordUserMe>("/api/users/@me");
+            var response = await _client.GetJsonAsync<DiscordUser>("/api/users/@me");
             return response;
         }
         public void Dispose()

@@ -14,5 +14,6 @@ namespace tts_api.Data.Database
         }
         public DbSet<Provider> Provider { get; set; }
         public DbSet<Voice> Voice { get; set; }
+        public DbSet<User> User { get; set; }
     }
 }
