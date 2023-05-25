@@ -19,11 +19,6 @@ function App() {
   return (
     <ThemeProvider theme={darkTheme}>
         <CssBaseline />
-        {/* <div>
-          <Button onClick={() => handleLogin()} variant="contained">
-            Authenticate
-          </Button>
-        </div> */}
         <Routes>
           <Route path="/callback" element={<Callback />}></Route>
           <Route path="/login" element={<Login></Login>}></Route>

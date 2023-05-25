@@ -5,7 +5,7 @@ import { AuthContext, User } from "./context/AuthContext";
 
 const Callback = () => {
   const [searchParams] = useSearchParams();
-  const { user, setUser } = useContext(AuthContext);
+  const { user, setUserHandler } = useContext(AuthContext);
   const code = searchParams.get("code");
 
   if (code == null) {
@@ -14,9 +14,10 @@ const Callback = () => {
   
   useEffect(() => {
     const getData = async () => {
+      //change to post with body
       const { data } = await axios.get<User>(`api/accounts/authenticate?code=` + code);
       if (data) {
-        setUser(data);
+        setUserHandler(data);
       }
     };
 
