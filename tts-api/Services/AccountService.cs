@@ -80,31 +80,36 @@ public class AccountService : IAccountService
         var scopes = _configuration["DiscordOAuth:Scopes"];
         var redirectUrl = _configuration["DiscordOAuth:FrontendCallback"];
 
-        var discordClient = new DiscordClient(model.code, clientId,clientSecret,scopes,redirectUrl);
-        var discordUser = await discordClient.GetUser();
-
-        var user = await _context.User.SingleOrDefaultAsync(x => x.discordId == discordUser.id);
-
-        // create new user in database if doesnt exist
-        if (user == null)
+        try
         {
-            user = new User
+            var discordClient = new DiscordClient(model.code, clientId, clientSecret, scopes, redirectUrl);
+            var discordUser = await discordClient.GetUser();
+            var user = await _context.User.SingleOrDefaultAsync(x => x.discordId == discordUser.id);
+
+            // create new user in database if doesnt exist
+            if (user == null)
             {
-                discordId = discordUser.id,
-                avatar = discordUser.avatar,
-                discriminator = discordUser.discriminator,
-                username = discordUser.username
-            };
+                user = new User
+                {
+                    discordId = discordUser.id,
+                    avatar = discordUser.avatar,
+                    discriminator = discordUser.discriminator,
+                    username = discordUser.username
+                };
 
-            _context.User.AddAsync(user);
-            await _context.SaveChangesAsync();
+                _context.User.AddAsync(user);
+                await _context.SaveChangesAsync();
+            }
+
+            var token = _jwtUtils.GenerateJwtToken(user);
+
+            return new AuthenticateResponse(user, token);
+
         }
-
-
-
-        var token = _jwtUtils.GenerateJwtToken(user);
-
-        return new AuthenticateResponse(user, token);
+        catch
+        {
+            return null;
+        }
     }
 
     public async Task<Account> Update(int id, UpdateRequest model)

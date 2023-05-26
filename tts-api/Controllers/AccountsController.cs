@@ -26,11 +26,15 @@ public class AccountsController : BaseController
     }
 
     [AllowAnonymous]
-    [HttpGet("authenticate")]
-    public async Task<IActionResult> Authenticate(string? code)
+    [HttpPost("authenticate")]
+    public async Task<IActionResult> Authenticate([FromBody] DiscordLoginRequest discordLoginRequest)
     {
-        var response = await _accountService.Authenticate(new DiscordLoginRequest() { code = code });
-        return Ok(response);
+        var response = await _accountService.Authenticate(discordLoginRequest);
+        if (response != null)
+        {
+            return Ok(response);
+        }
+        return Unauthorized();
     }
 
     [HttpGet("current")]
