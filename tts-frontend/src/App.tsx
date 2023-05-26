@@ -23,7 +23,7 @@ function App() {
       <Routes>
         <Route element={<PublicRoute />}>
           <Route path="/callback" element={<Callback />}></Route>
-          <Route path="/login" element={<Login></Login>}></Route>
+          <Route path="/login" element={<Login />}></Route>
         </Route>
         
         <Route element={<PrivateRoute />}>
