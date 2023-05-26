@@ -4,7 +4,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 const PrivateRoutes = () => {
     const { user } = useContext(AuthContext)
-    console.log("yapapa" + user)
+    
     if(!user) return <Navigate to='/login' replace />
   
     return <Outlet />

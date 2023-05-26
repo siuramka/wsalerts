@@ -15,7 +15,7 @@ const Callback = () => {
   useEffect(() => {
     const getData = async () => {
       //change to post with body
-      const { data } = await axios.get<User>(`api/accounts/authenticate?code=` + code);
+      const { data } = await axios.post<User>(`api/accounts/authenticate`, {code: code});
       if (data) {
         setUserHandler(data);
       }
