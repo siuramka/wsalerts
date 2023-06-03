@@ -14,7 +14,18 @@ import StoreIcon from "@mui/icons-material/Store";
 
 const Sidebar = () => {
   return (
-    <Drawer variant="persistent" anchor="left" open={true}>
+    <Drawer
+      sx={{
+        width: 240,
+        flexShrink: 0,
+        "& .MuiDrawer-paper": {
+          width: 240,
+          boxSizing: "border-box",
+        },
+      }}
+      variant="permanent"
+      anchor="left"
+    >
       <Toolbar />
       <Divider />
       <List>
