@@ -4,6 +4,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import DashboardLayout from "./layouts/DashboardLayout";
 import { Box, Grid } from "@mui/material";
+import Loader from "./Loader";
 
 const PrivateRoute = () => {
   const { user } = useContext(AuthContext);
@@ -12,6 +13,7 @@ const PrivateRoute = () => {
 
   return (
     <>
+      <Loader />
       <Box sx={{ display: "flex" }}>
         <Sidebar />
         <DashboardLayout>

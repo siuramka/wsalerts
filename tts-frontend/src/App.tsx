@@ -9,6 +9,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import Login from "./pages/Login";
 import PublicRoute from "./components/PublicRoute";
 import Dashboard from "./pages/Dashboard";
+import Voices from "./pages/Voices";
 
 const darkTheme = createTheme({
   palette: {
@@ -27,7 +28,7 @@ function App() {
         </Route>
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/voices" element={<>voices</>} />
+          <Route path="/voices" element={<Voices></Voices>} />
           <Route path="/providers" element={<>providers</>} />
         </Route>
       </Routes>

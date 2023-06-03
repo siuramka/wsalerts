@@ -26,14 +26,12 @@ const Sidebar = () => {
       variant="permanent"
       anchor="left"
     >
-      <Toolbar />
-      <Divider />
+      <Toolbar>Hey</Toolbar>
       <List>
         <ListItemButton key={0} component={Link} to="/providers">
           <ListItemIcon>
             <StoreIcon />
           </ListItemIcon>
-
           <ListItemText primary="Providers" />
         </ListItemButton>
         <ListItemButton key={1} component={Link} to="/voices">

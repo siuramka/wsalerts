@@ -16,7 +16,7 @@ const initialAuthContext: AuthContextType = {
   setUserHandler: () => {},    
 }
 
-type Props = {
+export type Props = {
     children?: React.ReactNode;
 };
 
