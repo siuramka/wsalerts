@@ -17,14 +17,12 @@ const Voices = () => {
     if (data) {
       setVoices(data);
     }
-
+    setLoaderHandler(false);
   };
 
   useEffect(() => {
     setLoaderHandler(true);
-    setTimeout(() => {
-      setLoaderHandler(false);
-    }, 2000);
+    getVoices();
   }, []);
   const columns: GridColDef[] = [
     { field: "id", headerName: "Voice ID", width: 70 },
