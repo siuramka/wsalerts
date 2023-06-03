@@ -25,9 +25,10 @@ function App() {
           <Route path="/callback" element={<Callback />}></Route>
           <Route path="/login" element={<Login />}></Route>
         </Route>
-        
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/voices" element={<>voices</>} />
+          <Route path="/providers" element={<>providers</>} />
         </Route>
       </Routes>
     </ThemeProvider>

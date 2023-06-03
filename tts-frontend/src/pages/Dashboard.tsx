@@ -1,7 +1,8 @@
+
 //react dashboard component
 const Dashboard = () => {
 
-    return (<>YEP</>)
+    return (<>dashboard</>)
 }
 
 export default Dashboard;
