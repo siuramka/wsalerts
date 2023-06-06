@@ -3,6 +3,7 @@ import { ICommand } from "../../types/contracts/ICommand";
 import { parsedCommand } from "../../types/parsedCommand";
 import tmi from "tmi.js";
 import { BaseCommand } from "./BaseCommand";
+import { ProviderConfig } from "../../../configs/ProviderConfig";
 
 export class BotCommand extends BaseCommand implements ICommand {
     constructor() {
@@ -16,8 +17,9 @@ export class BotCommand extends BaseCommand implements ICommand {
         this.handle();
     }
 
-    private handle(): void {
+    private async handle() {
         const synthMessage = `${this._message.username} said. ${this._message.messageContent}`
-        EventsHandler.emit("synthesizeElevenlabs", synthMessage);
+        const provider = await ProviderConfig.getProvider();
+        EventsHandler.emit(`synthesize${provider}`, synthMessage);
     }
 }

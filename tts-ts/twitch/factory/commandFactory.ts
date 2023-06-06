@@ -1,4 +1,3 @@
-import { parsedCommand } from "../types/parsedCommand";
 import { TtsCommand } from "./commands/TtsCommand";
 import { BotCommand } from "./commands/BotCommand";
 import { BaseCommand } from "./commands/BaseCommand";
@@ -17,5 +16,3 @@ export class CommandFactory {
         return this.commandMap.get(commandName);
     }
 }
-
-export { parsedCommand };

@@ -1,7 +1,4 @@
 import tmi from "tmi.js";
-import { config } from "../configs/configs";
-import { CommandFactory, parsedCommand } from "./factory/commandFactory";
-import { RedeemFactory } from "./factory/redeemFactory";
 import { TwitchSettingRepository } from "../database/repository/TwitchSetting/TwitchSettingRepository";
 
 interface ITwitchClient {

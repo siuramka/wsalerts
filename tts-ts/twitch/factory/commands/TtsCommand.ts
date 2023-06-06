@@ -1,7 +1,6 @@
 import EventsHandler from "../../../events/TtsEventHandler";
 import tmi from "tmi.js";
 import { ICommand } from "../../types/contracts/ICommand";
-import { parsedCommand } from "../commandFactory";
 import { ProviderConfig } from "../../../configs/ProviderConfig"
 import { BaseCommand } from "./BaseCommand";
 
