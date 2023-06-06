@@ -11,12 +11,11 @@ export class ProviderRepository {
 
   public async getProvider() {
     //should probably re write to findMany, cause id I think could not be id1 every time.
-    const query = this.prisma.selectedProvider.findFirst({
-        where: { id: 1 },
-        include: {
-          provider: true,
-        }
-      });
-      return query;
+    const query = await this.prisma.selectedProvider.findMany({
+      include: {
+        provider: true,
+      }
+    });
+    return query[0];
   }
 }

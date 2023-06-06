@@ -15,7 +15,7 @@ export class TwitchSettingRepository {
       where: { id: 1 },
       include: {
         twitchAuthorizedUsers: {
-          where: { 
+          where: {
             listenToUserChannel: true
           }
         }

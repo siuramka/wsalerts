@@ -1,18 +1,12 @@
 import EventsHandler from "../../../events/TtsEventHandler";
-import { Command } from "../../types/contracts/Command";
+import { ICommand } from "../../types/contracts/ICommand";
 import { parsedCommand } from "../../types/parsedCommand";
 import tmi from "tmi.js";
+import { BaseCommand } from "./BaseCommand";
 
-export class BotCommand implements Command {
-    private _message: parsedCommand
-
-    constructor(){
-        const initData = {
-            username: undefined,
-            messageContent: "",
-            voice: undefined   
-        }
-        this._message = initData
+export class BotCommand extends BaseCommand implements ICommand {
+    constructor() {
+        super()
     }
 
     parse(user: tmi.ChatUserstate, message: string): void {
@@ -24,6 +18,6 @@ export class BotCommand implements Command {
 
     private handle(): void {
         const synthMessage = `${this._message.username} said. ${this._message.messageContent}`
-        EventsHandler.emit("synthesizeAudioUberduck", synthMessage);
+        EventsHandler.emit("synthesizeElevenlabs", synthMessage);
     }
 }

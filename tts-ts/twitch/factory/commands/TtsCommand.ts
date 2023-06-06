@@ -1,29 +1,25 @@
 import EventsHandler from "../../../events/TtsEventHandler";
 import tmi from "tmi.js";
-import { Command } from "../../types/contracts/Command";
+import { ICommand } from "../../types/contracts/ICommand";
 import { parsedCommand } from "../commandFactory";
+import { ProviderConfig } from "../../../configs/ProviderConfig"
+import { BaseCommand } from "./BaseCommand";
 
-export class TtsCommand implements Command {
-    private _message: parsedCommand
-
-    constructor(){
-        const initData = {
-            username: undefined,
-            messageContent: "",
-            voice: undefined   
-        }
-        this._message = initData
+export class TtsCommand extends BaseCommand implements ICommand {
+    constructor() {
+        super()
     }
 
     parse(user: tmi.ChatUserstate, message: string): void {
         this._message.messageContent = message.replace("!tts ","")
         this._message.username = user.username
         this._message.voice = undefined
-        this.handle()
+        this.handle() // could await this but it's not really needed
     }
 
-    private handle(): void {
+    private async handle() {
         const synthMessage = `${this._message.username} said. ${this._message.messageContent}`
-        EventsHandler.emit("synthesizeUberduck", synthMessage);
+        const provider = await ProviderConfig.getProvider();
+        EventsHandler.emit(`synthesize${provider}`, synthMessage);
     }
 }
