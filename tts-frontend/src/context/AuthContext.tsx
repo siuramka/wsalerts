@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useState } from 'react';
 
 export type User = {
   discordId: string;
@@ -9,11 +9,13 @@ export type User = {
 type AuthContextType = {
   user: User | null;
   setUserHandler: (user: User | null) => void;
+  setUserSignout: () => void;
 };
 
 const initialAuthContext: AuthContextType = {
   user: null,
-  setUserHandler: () => {},    
+  setUserHandler: () => {},
+  setUserSignout: () => {}
 }
 
 export type Props = {
@@ -27,6 +29,10 @@ const AuthContextProvider = ({ children }: Props) => {
   const initialUser = storedUser ? JSON.parse(storedUser) : null;
   const [user, setUser] = useState<User | null>(initialUser);
 
+  const setUserSignout = () => {
+    setUserHandler(null);
+  }
+
   const setUserHandler = (user: User | null) => {
     setUser(user);
     if (user) {
@@ -37,7 +43,8 @@ const AuthContextProvider = ({ children }: Props) => {
   };
   const authContextValues: AuthContextType = {
     user,
-    setUserHandler
+    setUserHandler,
+    setUserSignout
   };
 
   return (

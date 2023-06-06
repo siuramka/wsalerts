@@ -1,4 +1,5 @@
 import {
+  Button,
   Divider,
   Drawer,
   List,
@@ -11,8 +12,16 @@ import {
 import { Link } from "react-router-dom";
 import RecordVoiceOverIcon from "@mui/icons-material/RecordVoiceOver";
 import StoreIcon from "@mui/icons-material/Store";
+import { AuthContext } from "../context/AuthContext";
+import { useContext } from "react";
 
 const Sidebar = () => {
+  const { setUserSignout } = useContext(AuthContext);
+
+  const SignUserOut = () => {
+    setUserSignout()
+  }
+
   return (
     <Drawer
       sx={{
@@ -26,7 +35,9 @@ const Sidebar = () => {
       variant="permanent"
       anchor="left"
     >
-      <Toolbar>Hey</Toolbar>
+      <Toolbar>
+        Hey <Button onClick={SignUserOut}>Logout</Button>
+      </Toolbar>
       <List>
         <ListItemButton key={0} component={Link} to="/providers">
           <ListItemIcon>
@@ -39,6 +50,12 @@ const Sidebar = () => {
             <RecordVoiceOverIcon />
           </ListItemIcon>
           <ListItemText primary="Voices" />
+        </ListItemButton>
+        <ListItemButton key={2} component={Link} to="/settings/tts">
+          <ListItemIcon>
+            <RecordVoiceOverIcon />
+          </ListItemIcon>
+          <ListItemText primary="Settings - TTS" />
         </ListItemButton>
       </List>
     </Drawer>

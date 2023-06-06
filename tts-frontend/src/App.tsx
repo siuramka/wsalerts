@@ -8,8 +8,8 @@ import { AuthContext } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
 import Login from "./pages/Login";
 import PublicRoute from "./components/PublicRoute";
-import Dashboard from "./pages/Dashboard";
 import Voices from "./pages/Voices";
+import TtsSettings from "./pages/Settings/TtsSettings";
 
 const darkTheme = createTheme({
   palette: {
@@ -27,9 +27,10 @@ function App() {
           <Route path="/login" element={<Login />}></Route>
         </Route>
         <Route element={<PrivateRoute />}>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/voices" element={<Voices></Voices>} />
+          <Route path="/" element={<></>} />
+          <Route path="/voices" element={<Voices/>} />
           <Route path="/providers" element={<>providers</>} />
+          <Route path="/settings/tts" element={<TtsSettings/>} />
         </Route>
       </Routes>
     </ThemeProvider>
