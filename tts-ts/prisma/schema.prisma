@@ -19,25 +19,31 @@ model Voice {
   providerId  Int
 }
 
+model SelectedProvider {
+  id         Int @id @default(autoincrement())
+  provider   Provider @relation(fields: [providerId], references: [id])
+  providerId Int @unique
+}
+
 model Provider {
-  id     Int     @id @default(autoincrement())
-  name   String
-  voices Voice[]
+  id               Int                @id @default(autoincrement())
+  name             String
+  voices           Voice[]
+  SelectedProvider SelectedProvider?
 }
 
 model User {
   id            Int    @id @default(autoincrement())
   discordId     String @unique
-  username      String 
+  username      String
   avatar        String
   discriminator String
 }
 
-
 model TwitchSetting {
   id                    Int                    @id @default(autoincrement())
-  botUsername           String
-  botOauth              String
+  botUsername           String @unique
+  botOauth              String @unique
   twitchAuthorizedUsers TwitchAuthorizedUser[]
 }
 

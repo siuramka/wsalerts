@@ -47,8 +47,9 @@ export class TwitchClientEventsHandler {
           if (isUserAuthorized) {
             const targetCommand = CommandFactory.getOperation(commandName);
             //should only be one method maybe
-            targetCommand?.parse(user, message);
-            targetCommand?.handle();
+            if (targetCommand) {
+              targetCommand.parse(user, message);
+            }
           }
         } catch (error) {
           console.log(`Error in chat parsing! => `);
