@@ -40,6 +40,6 @@ public class AccountsController : BaseController
     [HttpGet("current")]
     public IActionResult GetCurrent()
     {
-        return Ok(Account);
+        return Ok(User);
     }
 }

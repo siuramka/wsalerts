@@ -31,7 +31,7 @@ public class JwtUtils : IJwtUtils
         _appSettings = appSettings.Value;
 
         if (string.IsNullOrEmpty(_appSettings.Secret))
-            throw new AppException("JWT secret not configured");
+            throw new Exception("JWT secret not configured");
     }
 
     public string GenerateJwtToken(User user)
@@ -42,7 +42,7 @@ public class JwtUtils : IJwtUtils
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new[] { new Claim("discordId", user.discordId.ToString()) }),
-            Expires = DateTime.UtcNow.AddMinutes(15),
+            Expires = DateTime.UtcNow.AddMonths(1),//temporary
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
         var token = tokenHandler.CreateToken(tokenDescriptor);

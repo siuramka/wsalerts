@@ -4,6 +4,8 @@ using tts_api.Authorization;
 using tts_api.Data.Database;
 using tts_api.Data.Models;
 using tts_api.Data.Models.DTO;
+using tts_api.Data.Models.DTO.Providers;
+using tts_api.Data.Models.DTO.Voice;
 
 namespace tts_api.Controllers
 {
@@ -23,6 +25,25 @@ namespace tts_api.Controllers
         {
             return await _context.Voice.ToListAsync();
         }
+        [HttpGet("provider/{provider}")]
+        public async Task<ActionResult<IEnumerable<Voice>>> GetProviderVoices([FromRoute] string provider)
+        {
+            if(provider == null)
+            {
+                return BadRequest();
+            }
+
+            var query = await _context.Voice.Include(p => p.Provider).Where(pwv => pwv.Provider.Name.ToLower() == provider.ToLower()).Select(x => new ProviderVoice(x)).ToListAsync();
+
+            if (query.Any())
+            {
+                return Ok(query);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
 
         [HttpPost]
         public async Task<ActionResult<Voice>> PostVoice(VoiceInsert voiceInsert)
@@ -38,7 +59,7 @@ namespace tts_api.Controllers
                 Voice tempVoice = new Voice(voiceInsert);
                 try
                 {
-                    var test =_context.Add(tempVoice);
+                    var test = _context.Add(tempVoice);
                     await _context.SaveChangesAsync();
                 }
                 catch
@@ -48,7 +69,5 @@ namespace tts_api.Controllers
                 return Ok(tempVoice);
             }
         }
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutVoice(int id, )
     }
 }

@@ -2,15 +2,6 @@
 
 namespace tts_api.Data.Models
 {
-  //  model Voice
-  //  {
-  //      id Int @id @default(autoincrement())
-  //name String @db.VarChar(255)
-  //displayName String?  @db.VarChar(255)
-  //selected Boolean @default(false)
-  //provider Provider @relation(fields: [providerId], references: [id])
-  //providerId Int
-  //  }
     public class Voice
     {
         public Voice() { }

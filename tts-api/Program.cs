@@ -65,8 +65,6 @@ namespace tts_api
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            // global error handler
-            app.UseMiddleware<ErrorHandlerMiddleware>();
 
             // custom jwt auth middleware
             app.UseMiddleware<JwtMiddleware>();
