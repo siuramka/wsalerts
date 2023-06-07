@@ -10,6 +10,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import AddIcon from '@mui/icons-material/Add';
 import DoneIcon from '@mui/icons-material/Done';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ProviderVoiceModal from "../../components/modals/ProviderVoiceModal";
+
 const TtsSettings = () => {
 
   const { user } = useContext(AuthContext);
@@ -23,14 +25,24 @@ const TtsSettings = () => {
   const [select, setSelect] = useState('');
 
   const handleSave = () => {
-
+    ///
+    setEditable(false) 
   }
 
   const handleEditable = () => {
-    setEditable(true) // no need for if check since react won't re render if the same value pass
+    if(!deletable) {
+      setEditable(!editable) // no need for if check since react won't re render if the same value pass
+    }
   }
 
   const handleDeletable = () => {
+    if(!editable) {
+      setDeletable(!deletable)
+    }
+  }
+
+  const handleDeletableConfirm = () => {
+    //stuff
     setDeletable(!deletable)
   }
 
@@ -110,12 +122,21 @@ const TtsSettings = () => {
                 </Select>
               </FormControl>
               <Stack spacing={2} direction="row" sx={{ p: 2, pr: 0 }}>
-                <Button variant="outlined" startIcon={<AddIcon />}>Add</Button>
-                <Button variant="contained" startIcon={<SettingsIcon />} onClick={handleEditable}>Edit</Button>
+                {/* <Button variant="outlined" startIcon={<AddIcon />}>Add</Button> */}
+                <ProviderVoiceModal selectedProviderState={selectedProvider} selectedProviderSetState={setSelectedProvider}/>
+                {
+                  editable ?
+                    <>
+                      <Button color="success" variant="contained" startIcon={<SettingsIcon />} onClick={handleEditable}>Confirm edit</Button>
+                    </> :
+                    <>
+                     <Button variant="contained" startIcon={<SettingsIcon />} onClick={handleEditable}>Edit</Button>
+                    </>
+                }
                 {
                   deletable ?
                     <>
-                      <Button color="error" variant="contained" startIcon={<DoneIcon />} onClick={handleDeletable}>Confirm delete</Button>
+                      <Button color="error" variant="contained" startIcon={<DoneIcon />} onClick={handleDeletableConfirm}>Confirm delete</Button>
                     </> :
                     <>
                       <Button variant="contained" startIcon={<DeleteIcon />} onClick={handleDeletable}>Delete</Button>
@@ -127,9 +148,10 @@ const TtsSettings = () => {
             <div style={{ height: "50vh", width: "100%" }}>
               <DataGrid checkboxSelection={deletable} editMode="row" rows={voices} columns={columns} />
             </div>
-            <Box sx={{ pt:2, display: "flex", justifyContent: "right" }}>
+            
+            {/* <Box sx={{ pt:2, display: "flex", justifyContent: "right" }}>
               <Button color="success" variant="outlined" startIcon={<DeleteIcon />} onClick={handleSave}>Save changes</Button>
-            </Box>
+            </Box> */}
           </Box>
 
         </>
