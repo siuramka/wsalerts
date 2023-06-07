@@ -3,8 +3,9 @@ import { AuthContext } from "../context/AuthContext";
 import { Navigate, Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import DashboardLayout from "./layouts/DashboardLayout";
-import { Box, Grid } from "@mui/material";
+import { Alert, Box, Grid } from "@mui/material";
 import Loader from "./Loader";
+import AlertNotification from "./AlertNotification";
 
 const PrivateRoute = () => {
   const { user } = useContext(AuthContext);
@@ -13,6 +14,7 @@ const PrivateRoute = () => {
 
   return (
     <>
+      <AlertNotification/>
       <Loader />
       <Box sx={{ display: "flex" }}>
         <Sidebar />

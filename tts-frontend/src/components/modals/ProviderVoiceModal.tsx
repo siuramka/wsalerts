@@ -8,8 +8,9 @@ import { ProviderResponse } from '../../types/models/provider/ProvidersRespone';
 import { TtsSettingsToProviderVoiceModalProps } from '../../types/models/provider/TtsSettingsToProviderVoiceModalProps';
 import { selectedProviderProps } from '../../types/models/provider/props/selectedProviderProps';
 import { Checkbox, Chip, FormControl, FormControlLabel, Stack, TextField } from '@mui/material';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Controller, FieldValues, Resolver, SubmitHandler, UseFormHandleSubmit, useForm } from 'react-hook-form';
+import { NotificationContext } from '../../context/NotificationContext';
 
 type ProviderVoiceFormData = {
   apiVoiceName: string
@@ -34,12 +35,16 @@ const style = {
 export default function ProviderVoiceModal({ selectedProviderState, selectedProviderSetState }: selectedProviderProps): JSX.Element {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
+  const { success, error } = useContext(NotificationContext);
   const handleClose = () => setOpen(false);
   const { control, handleSubmit } = useForm<ProviderVoiceFormData>({
     reValidateMode: "onBlur"
   });
 
-  const onSubmit: SubmitHandler<ProviderVoiceFormData> = data => console.log(data);
+  const onSubmit: SubmitHandler<ProviderVoiceFormData> = data => {
+    console.log(data);
+    success("HEHEEHEHEHE YEP YEP")
+  } 
 
   return (
     <>
