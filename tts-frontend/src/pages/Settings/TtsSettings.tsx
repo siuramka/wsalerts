@@ -5,12 +5,13 @@ import { LoaderContext } from "../../context/LoaderContext";
 import { VoiceRespose } from "../../types/models/VoiceResponse";
 import { AuthContext } from "../../context/AuthContext";
 import { ProviderResponse } from "../../types/models/provider/ProvidersRespone";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridCallbackDetails, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 import SettingsIcon from '@mui/icons-material/Settings';
 import AddIcon from '@mui/icons-material/Add';
 import DoneIcon from '@mui/icons-material/Done';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ProviderVoiceModal from "../../components/modals/ProviderVoiceModal";
+import { NotificationContext } from "../../context/NotificationContext";
 
 const TtsSettings = () => {
 
@@ -23,27 +24,55 @@ const TtsSettings = () => {
   const headers = { Authorization: user?.token };
   const [voices, setVoices] = useState<VoiceRespose[]>([]);
   const [select, setSelect] = useState('');
+  const [selectedForDeletion, setSelectedForDeletion] = useState<GridRowSelectionModel>()
+  const { success, error } = useContext(NotificationContext);
+
 
   const handleSave = () => {
     ///
-    setEditable(false) 
+    setEditable(false)
+  }
+
+  const removeVoicesFromState = (deleteVoices: GridRowSelectionModel) => {
+    const newVoices = voices.filter(x => !deleteVoices.includes(x.id));
+    setVoices(newVoices)
+  }
+
+  const updateVoices = () => {
+    setLoaderHandler(true);
+    getVoices().then((voicesData) => {
+      setVoices(voicesData.data);
+      setLoaderHandler(false);
+    })
   }
 
   const handleEditable = () => {
-    if(!deletable) {
+    if (!deletable) {
       setEditable(!editable) // no need for if check since react won't re render if the same value pass
     }
   }
 
   const handleDeletable = () => {
-    if(!editable) {
+    if (!editable) {
       setDeletable(!deletable)
     }
   }
 
   const handleDeletableConfirm = () => {
-    //stuff
     setDeletable(!deletable)
+    Promise.all( // doesnt wait for api calls to finish <;o
+      selectedForDeletion!.map((voiceId, id) => {
+        axios.delete(`/api/voice/${voiceId}`, { headers })
+      })
+      ).catch(() => {
+        error("WHAT DID YOU DO ?")
+      })
+      .then(() => {
+        removeVoicesFromState(selectedForDeletion!)
+        success("Deleted voices!")
+      })
+    // Promise.all(selectedForDeletion?.map((voiceId, id) => axios.delete(`/api/provider/${voiceId}`)))
+
   }
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -61,6 +90,11 @@ const TtsSettings = () => {
   const getVoices = () => {
     return axios.get<VoiceRespose[]>(`/api/voice/provider/${selectedProvider?.name}`, { headers });
   };
+
+  const handleDeleteSelect = (rowSelectionModel: GridRowSelectionModel, details: GridCallbackDetails) => {
+    setSelectedForDeletion(rowSelectionModel)
+  }
+
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "Voice ID", width: 150, editable: editable },
@@ -99,7 +133,7 @@ const TtsSettings = () => {
 
   return (
     <>
-      {loading ? <></> :
+      {(loading && providers == null) ? <></> :
         <>
           <Box sx={{ pt: 2 }}>
             <Typography variant="h5" gutterBottom>
@@ -123,14 +157,14 @@ const TtsSettings = () => {
               </FormControl>
               <Stack spacing={2} direction="row" sx={{ p: 2, pr: 0 }}>
                 {/* <Button variant="outlined" startIcon={<AddIcon />}>Add</Button> */}
-                <ProviderVoiceModal selectedProviderState={selectedProvider} selectedProviderSetState={setSelectedProvider}/>
+                <ProviderVoiceModal updateVoices={updateVoices} selectedProviderState={selectedProvider} selectedProviderSetState={setSelectedProvider} />
                 {
                   editable ?
                     <>
                       <Button color="success" variant="contained" startIcon={<SettingsIcon />} onClick={handleEditable}>Confirm edit</Button>
                     </> :
                     <>
-                     <Button variant="contained" startIcon={<SettingsIcon />} onClick={handleEditable}>Edit</Button>
+                      <Button variant="contained" startIcon={<SettingsIcon />} onClick={handleEditable}>Edit</Button>
                     </>
                 }
                 {
@@ -146,9 +180,11 @@ const TtsSettings = () => {
               </Stack>
             </Box>
             <div style={{ height: "50vh", width: "100%" }}>
-              <DataGrid checkboxSelection={deletable} editMode="row" rows={voices} columns={columns} />
+              <DataGrid checkboxSelection={deletable} editMode="row" rows={voices} columns={columns}
+                onRowSelectionModelChange={handleDeleteSelect}
+              />
             </div>
-            
+
             {/* <Box sx={{ pt:2, display: "flex", justifyContent: "right" }}>
               <Button color="success" variant="outlined" startIcon={<DeleteIcon />} onClick={handleSave}>Save changes</Button>
             </Box> */}

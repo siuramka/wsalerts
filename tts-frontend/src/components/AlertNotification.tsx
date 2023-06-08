@@ -12,7 +12,7 @@ const AlertNotification = () => {
                 trigger === NotificationType.None ? <></> :
                     <>
                         <Box sx={{ zIndex: 2000, position: 'absolute', bottom: '5vh', right: '5vh' }}>
-                            <MuiAlert severity={trigger}>{triggerText}</MuiAlert>
+                            <MuiAlert variant="filled" severity={trigger}>{triggerText}</MuiAlert>
                         </Box>
                     </>
             }
