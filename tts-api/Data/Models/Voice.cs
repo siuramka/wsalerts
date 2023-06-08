@@ -1,10 +1,17 @@
 ﻿using tts_api.Data.Models.DTO;
+using tts_api.Data.Models.DTO.Voice;
 
 namespace tts_api.Data.Models
 {
     public class Voice
     {
         public Voice() { }
+        public Voice(ProviderVoiceInsert voiceInsert)
+        {
+            this.Name = voiceInsert.ApiVoiceName;
+            this.DisplayName = voiceInsert.DisplayName;
+            this.Selected = voiceInsert.SelectedVoice;
+        }
         public Voice(VoiceInsert voiceInsert)
         {
             this.ProviderId = voiceInsert.ProviderId;
