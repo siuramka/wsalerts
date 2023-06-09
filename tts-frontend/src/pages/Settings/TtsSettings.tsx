@@ -91,6 +91,7 @@ const TtsSettings = () => {
           updateDataDataGrid();
         });
     } else {
+      setLoaderHandler(true);
       const body: SettingsUpdate = {
         muted,
       };
@@ -167,7 +168,7 @@ const TtsSettings = () => {
     );
   };
 
-  const muteButtonColor = muted ? `primary` : `secondary`;
+  const muteButtonColor = muted ? `secondary` : `primary`;
 
   const handleDeleteSelect = (
     rowSelectionModel: GridRowSelectionModel,
@@ -267,9 +268,9 @@ const TtsSettings = () => {
                   disabled={!editable}
                 >
                   {muted ? (
-                    <>{<VolumeUpRoundedIcon />}</>
+                    <>{<VolumeOffRoundedIcon/>}</>
                   ) : (
-                    <>{<VolumeOffRoundedIcon />}</>
+                    <>{<VolumeUpRoundedIcon/>}</>
                   )}
                 </Button>
               </Stack>
