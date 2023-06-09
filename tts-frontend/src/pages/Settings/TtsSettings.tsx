@@ -126,9 +126,8 @@ const TtsSettings = () => {
     setDeletable(!deletable);
     if (selectedForDeletion) {
       Promise.all(
-        // doesnt wait for api calls to finish <;o
         selectedForDeletion!.map((voiceId, id) => {
-          axios.delete(`/api/voice/${voiceId}`, { headers });
+          return axios.delete(`/api/voice/${voiceId}`, { headers });
         })
       )
         .catch(() => {
@@ -192,7 +191,6 @@ const TtsSettings = () => {
   const updateDataDataGrid = () => {
     getVoices().then((voicesData) => {
       setVoices(voicesData.data);
-
       getSettings().then((settingsData) => {
         setMuted(settingsData.data.muted);
       });
@@ -208,7 +206,7 @@ const TtsSettings = () => {
       width: 250,
       editable: editable,
     },
-    { field: "name", headerName: "API Name", width: 250, editable: editable },
+    { field: "name", headerName: "Call Name", width: 250, editable: editable },
     {
       field: "selected",
       type: "boolean",
@@ -276,7 +274,6 @@ const TtsSettings = () => {
               </Stack>
 
               <Stack spacing={2} direction="row" sx={{ p: 2, pr: 0 }}>
-                {/* <Button variant="outlined" startIcon={<AddIcon />}>Add</Button> */}
                 <ProviderVoiceModal
                   updateVoices={updateVoices}
                   selectedProviderState={selectedProvider}
