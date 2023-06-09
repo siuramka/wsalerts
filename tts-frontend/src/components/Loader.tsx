@@ -6,12 +6,13 @@ const Loader = () => {
   const { loading } = useContext(LoaderContext);
   if (loading) {
     return (
-      <Box sx={{ width: "100%" }}>
+      <Box sx={{ width: "100%", position:"absolute" }}>
         <LinearProgress />
       </Box>
     );
+  } else {
+    return (<></>);
   }
-  return (<></>);
 };
 
 export default Loader;

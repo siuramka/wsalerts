@@ -5,7 +5,7 @@ interface Props {
 }
 
 const DashboardLayout: React.FunctionComponent<Props> = (props: Props) => {
-  return <Container>{props.children}</Container>;
+  return <Container sx={{marginTop: '2vh'}}>{props.children}</Container>;
 };
 
 export default DashboardLayout;
