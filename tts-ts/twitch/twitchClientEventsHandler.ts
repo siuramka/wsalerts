@@ -2,14 +2,17 @@ import tmi from "tmi.js";
 import { TwitchClient } from "./twitchClient";
 import { TwitchSettingRepository } from "../database/repository/TwitchSetting/TwitchSettingRepository";
 import { CommandFactory } from "./factory/commandFactory";
+import { SettingsRepository } from "../database/repository/TwitchSetting/SettingsRepository";
 
 export class TwitchClientEventsHandler {
   private _client: tmi.Client;
   private twitchSettingRepository: TwitchSettingRepository;
+  private settinsRepository: SettingsRepository;
 
   async initialize(client: TwitchClient) {
     this._client = client.getTmiClient();
     this.twitchSettingRepository = new TwitchSettingRepository();
+    this.settinsRepository = new SettingsRepository();
     await this.setupChatListener();
   }
 
@@ -25,30 +28,37 @@ export class TwitchClientEventsHandler {
     this._client.on(
       "chat",
       async (channel, user: tmi.UserNoticeState, message, self) => {
+        const settings = await this.settinsRepository.getSettings();
+        const isDisabledMessage = message.split(" ")[1][0] == '~'
+        
+        if(settings.muted || isDisabledMessage) {
+          return;
+        }
+
         let commandName = message.split(" ")[0];
 
         const twitchSetting = await this.twitchSettingRepository.getFirst();
+
         const authorizedUsers = twitchSetting?.twitchAuthorizedUsers.map(
           (acc) => acc.username.toLocaleLowerCase()
         );
+
         const isUserAuthorized = authorizedUsers?.includes(
           user.username.toLocaleLowerCase()
         );
 
-        //logic for this:https://www.baeldung.com/java-replace-if-statements
-        //https://refactoring.guru/design-patterns/command/typescript/example
-        //command pattern
         try {
           if (user.username === twitchSetting?.botUsername) {
             console.log(`${user.username}: ${message}`);
             commandName = "!BotCommand";
           }
-          console.log(commandName)
+
           if (isUserAuthorized) {
             const targetCommand = CommandFactory.getOperation(commandName);
             //should only be one method maybe
-              targetCommand?.parse(user, message);
+            targetCommand?.parse(user, message);
           }
+
         } catch (error) {
           console.log(`Error in chat parsing! => `);
           console.log(error);

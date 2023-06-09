@@ -10,6 +10,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Settings {
+  id    Int     @id @default(1)
+  muted Boolean @default(false)
+}
+
 model Voice {
   id          Int      @id @default(autoincrement())
   name        String   @db.VarChar(255)
@@ -20,14 +25,14 @@ model Voice {
 }
 
 model SelectedProvider {
-  id         Int @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   provider   Provider @relation(fields: [providerId], references: [id])
-  providerId Int @unique
+  providerId Int      @unique
 }
 
 model Provider {
-  id               Int                @id @default(autoincrement())
-  name             String
+  id               Int               @id @default(autoincrement())
+  name             String // Should start with upper case i.e: Myprovider
   voices           Voice[]
   SelectedProvider SelectedProvider?
 }
@@ -40,10 +45,16 @@ model User {
   discriminator String
 }
 
+// Can't add authorized property to user, sas the authorizedIds will have to be fetched from the db every authorization request anyways, so just .Any()
+model AuthorizedIds {
+  id        Int    @id @default(autoincrement())
+  discordId String
+}
+
 model TwitchSetting {
   id                    Int                    @id @default(autoincrement())
-  botUsername           String @unique
-  botOauth              String @unique
+  botUsername           String                 @unique
+  botOauth              String                 @unique
   twitchAuthorizedUsers TwitchAuthorizedUser[]
 }
 

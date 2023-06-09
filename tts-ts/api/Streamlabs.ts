@@ -4,7 +4,7 @@ class Streamlabs extends ApiBase {
     private _apiHeaders: any
 
     constructor(){
-        super("https://us-central1-sunlit-context-217400.cloudfunctions.net")
+        super("https://streamlabs.com/")
         this.initHeaders()
     }
 
@@ -21,7 +21,7 @@ class Streamlabs extends ApiBase {
     }
 
     async getSpeechData(message: string, voice: string = "Brian") {
-        const response = await this.post("/streamlabs-tts", { text: message, voice }, this._apiHeaders)
+        const response = await this.post("/polly/speak", { text: message, voice }, this._apiHeaders)
         return response.data.speak_url
     }
 }

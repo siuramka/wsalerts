@@ -41,9 +41,10 @@ class TtsEventHandler extends EventEmitter {
 
     this.on("synthesizeStreamlabs", async (message: any, voice: any) => {
       console.log(`[Streamlabs] Got synthesize request "${message}"!`);
-      const audioBlob = await Tts.getSynthesizedAudioBase64(message, voice);
+      let voiceData = voice || await UtilsVoice.getRandomVoice("streamlabs");
+      const audioBlob = await Tts.getSynthesizedAudioStreamlabs(message, voiceData);
       if (audioBlob) {
-        console.log(`Synthesized "${message}" with voice "${voice}"`);
+        console.log(`Synthesized "${message}" with voice "${voiceData}"`);
         this.emit("sendAudioBlob", audioBlob);
       }
     });
