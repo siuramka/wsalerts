@@ -23,11 +23,14 @@ import {
 } from "@mui/x-data-grid";
 import SettingsIcon from "@mui/icons-material/Settings";
 import AddIcon from "@mui/icons-material/Add";
+import VolumeOffRoundedIcon from "@mui/icons-material/VolumeOffRounded";
 import DoneIcon from "@mui/icons-material/Done";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ProviderVoiceModal from "../../components/modals/ProviderVoiceModal";
+import VolumeUpRoundedIcon from "@mui/icons-material/VolumeUpRounded";
 import { NotificationContext } from "../../context/NotificationContext";
 import { SelectedProviderUpdate } from "../../types/models/provider/SelectedProviderUpdate";
+import { SettingsUpdate } from "../../types/models/provider/SettingsUpdate";
 
 const TtsSettings = () => {
   const { user } = useContext(AuthContext);
@@ -38,12 +41,13 @@ const TtsSettings = () => {
   const { loading, setLoaderHandler } = useContext(LoaderContext);
   const headers = { Authorization: user?.token };
   const [voices, setVoices] = useState<VoiceRespose[]>([]);
-  const [select, setSelect] = useState('');
+  const [select, setSelect] = useState("");
   const [selectedForDeletion, setSelectedForDeletion] =
     useState<GridRowSelectionModel>();
   const { success, error } = useContext(NotificationContext);
+  const [muted, setMuted] = useState(false);
 
-  const handleSave = () => {  
+  const handleSave = () => {
     ///
     setEditable(false);
   };
@@ -76,15 +80,30 @@ const TtsSettings = () => {
       axios
         .patch(`/api/selectedprovider`, { ...body }, { headers })
         .then(() => {
-          success("Updated provider!");
+          success("Updated data!");
         })
         .catch(() => {
-          error("Failed to update provider!");
+          error("Failed to update data!");
         })
         .finally(() => {
           setLoaderHandler(false);
           updateDataProviders();
           updateDataDataGrid();
+        });
+    } else {
+      const body: SettingsUpdate = {
+        muted,
+      };
+      axios
+        .patch(`/api/settings`, { ...body }, { headers })
+        .then(() => {
+          success("Updated data!");
+        })
+        .catch(() => {
+          error("Failed to update data!");
+        })
+        .finally(() => {
+          setLoaderHandler(false);
         });
     }
     setEditable(!editable);
@@ -121,6 +140,10 @@ const TtsSettings = () => {
     }
   };
 
+  const handleMute = () => {
+    setMuted(!muted);
+  };
+
   const handleChange = (event: SelectChangeEvent) => {
     setSelect(event.target.value);
   };
@@ -133,12 +156,18 @@ const TtsSettings = () => {
     return axios.get<ProviderResponse[]>(`/api/provider`, { headers });
   };
 
+  const getSettings = () => {
+    return axios.get<SettingsUpdate>(`/api/settings`, { headers });
+  };
+
   const getVoices = () => {
     return axios.get<VoiceRespose[]>(
       `/api/voice/provider/${selectedProvider?.name}`,
       { headers }
     );
   };
+
+  const muteButtonColor = muted ? `primary` : `secondary`;
 
   const handleDeleteSelect = (
     rowSelectionModel: GridRowSelectionModel,
@@ -157,15 +186,18 @@ const TtsSettings = () => {
         setProviders(providersData.data);
       });
     });
-  }
+  };
 
   const updateDataDataGrid = () => {
     getVoices().then((voicesData) => {
       setVoices(voicesData.data);
 
+      getSettings().then((settingsData) => {
+        setMuted(settingsData.data.muted);
+      });
       setLoaderHandler(false);
     });
-  }
+  };
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "Voice ID", width: 150, editable: editable },
@@ -186,7 +218,7 @@ const TtsSettings = () => {
   ];
 
   useEffect(() => {
-    updateDataProviders()
+    updateDataProviders();
   }, []);
 
   useEffect(() => {
@@ -211,23 +243,37 @@ const TtsSettings = () => {
                 justifyContent: "space-between",
               }}
             >
-              <FormControl color="success">
-                <FormHelperText sx={{ color: "#fff" }}>
-                  Active TTS API
-                </FormHelperText>
-                <Select
-                  value={select}
-                  onChange={handleChange}
-                  displayEmpty
+              <Stack direction="row" alignItems="end" spacing={2}>
+                <FormControl color="success">
+                  <FormHelperText sx={{ color: "#fff" }}>
+                    Active TTS API
+                  </FormHelperText>
+                  <Select
+                    value={select}
+                    onChange={handleChange}
+                    displayEmpty
+                    disabled={!editable}
+                  >
+                    {providers.map((provider) => (
+                      <MenuItem value={provider.name}>{provider.name}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <Button
+                  color={muteButtonColor}
+                  variant="outlined"
+                  sx={{ p: 2 }}
+                  onClick={handleMute}
                   disabled={!editable}
                 >
-                  {providers.map((provider) => (
-                    <MenuItem value={provider.name}>
-                      {provider.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+                  {muted ? (
+                    <>{<VolumeUpRoundedIcon />}</>
+                  ) : (
+                    <>{<VolumeOffRoundedIcon />}</>
+                  )}
+                </Button>
+              </Stack>
+
               <Stack spacing={2} direction="row" sx={{ p: 2, pr: 0 }}>
                 {/* <Button variant="outlined" startIcon={<AddIcon />}>Add</Button> */}
                 <ProviderVoiceModal
