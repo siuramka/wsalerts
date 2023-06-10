@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import PublicRoute from "./components/PublicRoute";
 import Voices from "./pages/Voices";
 import TtsSettings from "./pages/Settings/TtsSettings";
+import NotFound from "./pages/NotFound";
 
 const darkTheme = createTheme({
   palette: {
@@ -22,9 +23,10 @@ function App() {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <Routes>
+        <Route path="*" element={<NotFound/>}/>
         <Route element={<PublicRoute />}>
-          <Route path="/callback" element={<Callback />}></Route>
-          <Route path="/login" element={<Login />}></Route>
+          <Route path="/callback" element={<Callback />}/>
+          <Route path="/login" element={<Login />}/>
         </Route>
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<></>} />

@@ -334,10 +334,6 @@ const TtsSettings = () => {
                 onRowSelectionModelChange={handleDeleteSelect}
               />
             </div>
-
-            {/* <Box sx={{ pt:2, display: "flex", justifyContent: "right" }}>
-              <Button color="success" variant="outlined" startIcon={<DeleteIcon />} onClick={handleSave}>Save changes</Button>
-            </Box> */}
           </Box>
         </>
       )}

@@ -1,5 +1,6 @@
 import {
   Button,
+  Chip,
   Divider,
   Drawer,
   List,
@@ -10,17 +11,19 @@ import {
   Toolbar,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import FaceIcon from '@mui/icons-material/Face';
 import RecordVoiceOverIcon from "@mui/icons-material/RecordVoiceOver";
 import StoreIcon from "@mui/icons-material/Store";
 import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const Sidebar = () => {
-  const { setUserSignout } = useContext(AuthContext);
+  const { user, setUserSignout } = useContext(AuthContext);
 
   const SignUserOut = () => {
-    setUserSignout()
-  }
+    setUserSignout();
+  };
 
   return (
     <Drawer
@@ -35,8 +38,22 @@ const Sidebar = () => {
       variant="permanent"
       anchor="left"
     >
-      <Toolbar>
-        Hey <Button onClick={SignUserOut}>Logout</Button>
+      <Toolbar
+        sx={{
+
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <Chip
+        icon={<FaceIcon />} 
+  label={user?.username}
+  variant="outlined"
+/>
+        
+        <Button variant="outlined" onClick={SignUserOut}>
+          <LogoutIcon/>
+        </Button>
       </Toolbar>
       <List>
         <ListItemButton key={0} component={Link} to="/providers">

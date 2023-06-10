@@ -3,9 +3,11 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext, User } from "./context/AuthContext";
 import { DiscordAuthenticateRequest } from "./types/DiscordAuthenticateRequest";
+import { LoaderContext } from "./context/LoaderContext";
 
 const Callback = () => {
   const [searchParams] = useSearchParams();
+  const { setLoaderHandler } = useContext(LoaderContext);
   const { user, setUserHandler } = useContext(AuthContext);
   const code = searchParams.get("code");
 
@@ -14,6 +16,7 @@ const Callback = () => {
   }
 
   useEffect(() => {
+    setLoaderHandler(true)
     const getData = async () => {
       //change to post with body
       const request: DiscordAuthenticateRequest = {
@@ -31,6 +34,7 @@ const Callback = () => {
     if (code) {
       getData();
     }
+    setLoaderHandler(false);
   }, [code]);
 
   if (user) {
