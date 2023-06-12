@@ -3,6 +3,7 @@ import { TwitchClient } from "./twitchClient";
 import { TwitchSettingRepository } from "../database/repository/TwitchSetting/TwitchSettingRepository";
 import { CommandFactory } from "./factory/commandFactory";
 import { SettingsRepository } from "../database/repository/TwitchSetting/SettingsRepository";
+import { whitelistedCommands } from "./types/whitelistedCommands";
 
 export class TwitchClientEventsHandler {
   private _client: tmi.Client;
@@ -29,20 +30,21 @@ export class TwitchClientEventsHandler {
       "chat",
       async (channel, user: tmi.UserNoticeState, message, self) => {
         const settings = await this.settinsRepository.getSettings();
-        const isDisabledMessage = message.split(" ")[1][0] == '~'
-        
-        if(settings.muted || isDisabledMessage) {
-          return;
-        }
+        const isDisabledMessage = message[0] == "~";
 
         let commandName = message.split(" ")[0];
+        if (
+          (settings.muted || isDisabledMessage) &&
+          !whitelistedCommands.includes(commandName)
+        ) {
+          return;
+        }
 
         const twitchSetting = await this.twitchSettingRepository.getFirst();
 
         const authorizedUsers = twitchSetting?.twitchAuthorizedUsers.map(
           (acc) => acc.username.toLocaleLowerCase()
         );
-
         const isUserAuthorized = authorizedUsers?.includes(
           user.username.toLocaleLowerCase()
         );
@@ -55,10 +57,12 @@ export class TwitchClientEventsHandler {
 
           if (isUserAuthorized) {
             const targetCommand = CommandFactory.getOperation(commandName);
-            //should only be one method maybe
-            targetCommand?.parse(user, message);
-          }
+            const returnMessage = await targetCommand?.parse(user, message);
 
+            if (returnMessage) {
+              await this._client.say(channel, `~${returnMessage}`);
+            }
+          }
         } catch (error) {
           console.log(`Error in chat parsing! => `);
           console.log(error);

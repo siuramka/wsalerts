@@ -56,7 +56,7 @@ const Sidebar = () => {
         </Button>
       </Toolbar>
       <List>
-        <ListItemButton key={0} component={Link} to="/providers">
+        {/* <ListItemButton key={0} component={Link} to="/providers">
           <ListItemIcon>
             <StoreIcon />
           </ListItemIcon>
@@ -67,12 +67,12 @@ const Sidebar = () => {
             <RecordVoiceOverIcon />
           </ListItemIcon>
           <ListItemText primary="Voices" />
-        </ListItemButton>
+        </ListItemButton> */}
         <ListItemButton key={2} component={Link} to="/settings/tts">
           <ListItemIcon>
             <RecordVoiceOverIcon />
           </ListItemIcon>
-          <ListItemText primary="Settings - TTS" />
+          <ListItemText primary="TTS Settings" />
         </ListItemButton>
       </List>
     </Drawer>

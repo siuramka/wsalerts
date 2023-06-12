@@ -11,7 +11,7 @@ export class TwitchSettingRepository {
 
   public async getFirst() {
     //prisma findFirst where id = 1 and select included twitchAuthorizedUsers where listenToUserChannel is true
-    const query = this.prisma.twitchSetting.findFirst({
+    const query = await this.prisma.twitchSetting.findFirst({
       where: { id: 1 },
       include: {
         twitchAuthorizedUsers: {

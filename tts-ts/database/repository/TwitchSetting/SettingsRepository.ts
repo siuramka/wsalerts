@@ -15,8 +15,8 @@ export class SettingsRepository {
     return query[0];
   }
 
-  public async setSettings(newSettings: Settings): Promise<void> {
-    const query = await this.prisma.settings.update({
+  public async setSettings(newSettings: Settings): Promise<Settings> {
+    return await this.prisma.settings.update({
       where: {
         id: 1,
       },

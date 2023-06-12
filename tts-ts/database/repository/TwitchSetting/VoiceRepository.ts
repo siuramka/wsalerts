@@ -10,7 +10,7 @@ export class VoiceRepository {
   }
 
   public async getProviderWithVoices(provider: provider) {
-    const query = this.prisma.provider.findFirst({
+    const query = await this.prisma.provider.findFirst({
       where: { name: provider },
       include: {
         voices: true,
@@ -21,7 +21,7 @@ export class VoiceRepository {
   }
 
   public async getProviderWithVoicesAndSelected(provider: provider) {
-    const query = this.prisma.provider.findFirst({
+    const query = await this.prisma.provider.findFirst({
       where: { name: provider },
       include: {
         voices: {
