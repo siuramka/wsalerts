@@ -45,6 +45,7 @@ export type ApiConfigType = IUberduckConfig | IElevenlabsConfig
 
 interface Config {
   PORT: string | undefined;
+  SOCKET_PORT: string | undefined;
   API_KEY: string | undefined;
   API_SECRET: string | undefined;
   XI_API_KEY: string | undefined;
@@ -52,6 +53,7 @@ interface Config {
 
 export const config: Config = {
   PORT: process.env.PORT,
+  SOCKET_PORT: process.env.SOCKET_PORT,
   API_KEY: process.env.API_KEY,
   API_SECRET: process.env.API_SECRET,
   XI_API_KEY: process.env.XI_API_KEY

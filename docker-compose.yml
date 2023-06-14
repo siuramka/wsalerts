@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  tts-compose:
+    build:
+      context: ./tts-ts
+      dockerfile: Dockerfile
+    # restart: always
+    ports:
+      - "3331:3331"
+      - "3333:3333"
+    depends_on:
+      - db
+    networks:
+      - prisma-app
+
+  db:
+    container_name: "db-tts-compose"
+    image: mysql:8.0
+    # restart: always
+    environment:
+      - MYSQL_DATABASE=ggg123
+      - MYSQL_ROOT_PASSWORD=password
+    ports:
+      - '3306:3306'
+    networks:
+      - prisma-app
+    # volumes:
+    #   - ./sql/yep.sql:/docker-entrypoint-initdb.d/yep.sql
+
+networks:
+  prisma-app:
+    driver: bridge

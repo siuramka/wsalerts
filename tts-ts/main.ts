@@ -2,9 +2,10 @@ import DatabaseConfig from "./database/DatabaseConfig";
 import { Server } from "./sockets/Server";
 import { TwitchClient } from "./twitch/twitchClient";
 import { TwitchClientEventsHandler } from "./twitch/twitchClientEventsHandler";
-
+import { config } from "./configs/configs"
 (async () => {
-  const server = new Server(3333);
+  console.log(process.env.DATABASE_URL)
+  const server = new Server(parseInt(config.SOCKET_PORT as string));
   await server.start();
   
   const client = new TwitchClient();

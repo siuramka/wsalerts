@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Settings {
+  id    Int     @id @default(1)
+  muted Boolean @default(false)
+}
+
+model Voice {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(255)
+  displayName String?  @db.VarChar(255)
+  selected    Boolean  @default(false)
+  provider    Provider @relation(fields: [providerId], references: [id])
+  providerId  Int
+}
+
+model SelectedProvider {
+  id         Int      @id @default(autoincrement())
+  provider   Provider @relation(fields: [providerId], references: [id])
+  providerId Int      @unique
+}
+
+model Provider {
+  id               Int               @id @default(autoincrement())
+  name             String // Should start with upper case i.e: Myprovider
+  voices           Voice[]
+  SelectedProvider SelectedProvider?
+}
+
+model User {
+  id            Int    @id @default(autoincrement())
+  discordId     String @unique
+  username      String
+  avatar        String
+  discriminator String
+}
+
+// Can't add authorized property to user, sas the authorizedIds will have to be fetched from the db every authorization request anyways, so just .Any()
+model AuthorizedIds {
+  id        Int    @id @default(autoincrement())
+  discordId String
+}
+
+model TwitchSetting {
+  id                    Int                    @id @default(autoincrement())
+  botUsername           String                 @unique
+  botOauth              String                 @unique
+  twitchAuthorizedUsers TwitchAuthorizedUser[]
+}
+
+model TwitchAuthorizedUser {
+  id                  Int           @id @default(autoincrement())
+  username            String
+  twitch              TwitchSetting @relation(fields: [twitchId], references: [id])
+  twitchId            Int
+  listenToUserChannel Boolean
+}
