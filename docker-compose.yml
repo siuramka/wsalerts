@@ -18,7 +18,7 @@ services:
     image: mysql:8.0
     # restart: always
     environment:
-      - MYSQL_DATABASE=ggg123
+      - MYSQL_DATABASE=wuagababa
       - MYSQL_ROOT_PASSWORD=password
     ports:
       - '3306:3306'

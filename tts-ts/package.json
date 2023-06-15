@@ -9,6 +9,9 @@
     "start": "node dist/main.js",
     "build": "tsc"
   },
+  "prisma": {
+    "seed": "ts-node seed/seed.ts"
+  },
   "author": "siuramka",
   "license": "MIT",
   "dependencies": {
