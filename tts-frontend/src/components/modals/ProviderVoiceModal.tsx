@@ -4,14 +4,12 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import AddIcon from '@mui/icons-material/Add';
-import { ProviderResponse } from '../../types/models/provider/ProvidersRespone';
-import { TtsSettingsToProviderVoiceModalProps } from '../../types/models/provider/TtsSettingsToProviderVoiceModalProps';
 import { selectedProviderProps } from '../../types/models/provider/props/selectedProviderProps';
-import { Checkbox, Chip, FormControl, FormControlLabel, Stack, TextField } from '@mui/material';
+import { Checkbox, Chip, FormControlLabel, Stack, TextField } from '@mui/material';
 import { useContext, useState } from 'react';
-import { Controller, FieldValues, Resolver, SubmitHandler, UseFormHandleSubmit, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { NotificationContext } from '../../context/NotificationContext';
-import axios, { Axios, AxiosResponse } from 'axios';
+import axios, {  } from 'axios';
 import { AuthContext } from '../../context/AuthContext';
 import { LoaderContext } from '../../context/LoaderContext';
 

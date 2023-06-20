@@ -1,21 +1,13 @@
-import { CssBaseline, Switch, ThemeProvider, createTheme } from "@mui/material";
-import Button from "@mui/material/Button";
-import axios from "axios";
+import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import {
-  Link,
   Navigate,
   Route,
-  Router,
   Routes,
-  useNavigate,
 } from "react-router-dom";
 import Callback from "./Callback";
-import { useContext } from "react";
-import { AuthContext } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
 import Login from "./pages/Login";
 import PublicRoute from "./components/PublicRoute";
-import Voices from "./pages/Voices";
 import TtsSettings from "./pages/Settings/TtsSettings";
 import NotFound from "./pages/NotFound";
 

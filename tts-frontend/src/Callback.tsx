@@ -1,5 +1,5 @@
-import { Navigate, useLocation, useSearchParams } from "react-router-dom";
-import React, { useContext, useEffect, useState } from "react";
+import { Navigate, useSearchParams } from "react-router-dom";
+import { useContext, useEffect } from "react";
 import axios from "axios";
 import { AuthContext, User } from "./context/AuthContext";
 import { DiscordAuthenticateRequest } from "./types/DiscordAuthenticateRequest";
@@ -41,7 +41,6 @@ const Callback = () => {
     return <Navigate to="/" replace />;
   }
 
-  return null;
 };
 
 export default Callback;

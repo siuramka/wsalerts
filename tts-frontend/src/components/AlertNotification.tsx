@@ -1,8 +1,7 @@
 import MuiAlert from '@mui/material/Alert';
 import { NotificationContext, NotificationType } from "../context/NotificationContext"
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Box } from '@mui/material';
-import zIndex from '@mui/material/styles/zIndex';
 
 const AlertNotification = () => {
     const { trigger, triggerText } = useContext(NotificationContext);

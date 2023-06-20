@@ -1,10 +1,8 @@
 import {
   Button,
   Chip,
-  Divider,
   Drawer,
   List,
-  ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
@@ -13,7 +11,6 @@ import {
 import { Link } from "react-router-dom";
 import FaceIcon from '@mui/icons-material/Face';
 import RecordVoiceOverIcon from "@mui/icons-material/RecordVoiceOver";
-import StoreIcon from "@mui/icons-material/Store";
 import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 import LogoutIcon from '@mui/icons-material/Logout';

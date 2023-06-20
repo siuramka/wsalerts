@@ -27,10 +27,23 @@ const AuthContext = createContext(initialAuthContext);
 const AuthContextProvider = ({ children }: Props) => {
   const storedUser = localStorage.getItem('user');
   const initialUser = storedUser ? JSON.parse(storedUser) : null;
+  const lastLogin = localStorage.getItem('lastLogin')
   const [user, setUser] = useState<User | null>(initialUser);
 
+  
+  
+  
   const setUserSignout = () => {
     setUserHandler(null);
+  }
+  
+  if(!lastLogin) {
+    localStorage.setItem('lastLogin', Date.now().toString())
+  }
+
+  if(lastLogin && (Date.now() - Date.parse(lastLogin) >= 2419200))
+  {
+    setUserSignout(); //just log out user after 1 month, gonna set jwt exp at 1.1month, should do this check via a backend call tbh
   }
 
   const setUserHandler = (user: User | null) => {

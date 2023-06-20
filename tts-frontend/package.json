@@ -1,13 +1,15 @@
 {
   "name": "tts-frontend",
-  "private": true,
+  "private": false,
   "version": "0.0.0",
+  "homepage": ".",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "serve dist"
   },
   "dependencies": {
     "@emotion/react": "^11.11.0",

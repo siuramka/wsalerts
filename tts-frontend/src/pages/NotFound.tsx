@@ -1,4 +1,4 @@
-import { Alert, Box, Typography } from "@mui/material";
+import { Alert, Box } from "@mui/material";
 
 const NotFound = () => {
   return (
