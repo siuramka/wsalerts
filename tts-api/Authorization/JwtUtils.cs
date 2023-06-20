@@ -42,7 +42,7 @@ public class JwtUtils : IJwtUtils
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new[] { new Claim("discordId", user.discordId.ToString()) }),
-            Expires = DateTime.UtcNow.AddMonths(1),//temporary
+            Expires = DateTime.UtcNow.AddDays(33),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
         var token = tokenHandler.CreateToken(tokenDescriptor);

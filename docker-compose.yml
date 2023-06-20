@@ -1,32 +1,54 @@
 version: '3.8'
 services:
-  tts-compose:
-    build:
-      context: ./tts-ts
-      dockerfile: Dockerfile
-    # restart: always
-    ports:
-      - "3331:3331"
-      - "3333:3333"
-    depends_on:
-      - db
-    networks:
-      - prisma-app
 
   db:
-    container_name: "db-tts-compose"
     image: mysql:8.0
     # restart: always
     environment:
       - MYSQL_DATABASE=wuagababa
       - MYSQL_ROOT_PASSWORD=password
     ports:
-      - '3306:3306'
-    networks:
-      - prisma-app
-    # volumes:
-    #   - ./sql/yep.sql:/docker-entrypoint-initdb.d/yep.sql
+      - 3306:3306
 
-networks:
-  prisma-app:
-    driver: bridge
+  nginx:
+    image: nginx
+    depends_on:
+      - tts-api
+      - tts-frontend
+    restart: always
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3050:80"
+
+      
+  tts-api:
+    container_name: tts-api
+    build:
+      context: ./tts-api
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    environment:
+      ASPNETCORE_URLS: "http://+:5000"
+
+  tts-service:
+    container_name: tts-service
+    build:
+      context: ./tts-ts
+      dockerfile: Dockerfile
+    # restart: always
+    ports:
+      - 3331:3331
+      - 3333:3333
+    depends_on:
+      - db
+
+  tts-frontend:
+    build:
+      context: ./tts-frontend
+      dockerfile: Dockerfile
+    depends_on:
+      - tts-api
+      - db

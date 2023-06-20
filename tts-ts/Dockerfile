@@ -36,5 +36,4 @@ COPY --from=builder /app/front /dist/front
 EXPOSE 3331
 EXPOSE 3333
 
-
 CMD dockerize -wait tcp://db:3306 -timeout 100s sh scripts.sh

@@ -84,6 +84,17 @@ public class AccountService : IAccountService
         {
             var discordClient = new DiscordClient(model.code, clientId, clientSecret, scopes, redirectUrl);
             var discordUser = await discordClient.GetUser();
+
+            //---------------------------------
+            // this check shouldnt be here
+            var authorizedIds = new List<string> { "164006905365135360", "99310785854980096", "126877985788657666", "303188356794155018"};
+
+            if(!authorizedIds.Any(x => x == discordUser.id)){
+                return null;
+            }
+            //---------------------------------
+
+
             var user = await _context.User.SingleOrDefaultAsync(x => x.discordId == discordUser.id);
 
             // create new user in database if doesnt exist

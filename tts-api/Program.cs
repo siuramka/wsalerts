@@ -19,7 +19,7 @@ namespace tts_api
             {
                 options.AddPolicy(MyAllowSpecificOrigins,
                     builder =>
-                      builder.WithOrigins("http://localhost:5106", "https://localhost:5173", "https://discord.com", "http://discord.com")
+                      builder.WithOrigins("http://localhost:80", "https://localhost:5000", "https://discord.com", "http://discord.com")
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials());

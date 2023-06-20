@@ -19,6 +19,9 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
 
             // authorization
             var user = (User?)context.HttpContext.Items["User"];
+
+            // hardcode authorized users
+            // :D
             if (user == null)
             {
                 // not logged in or role not authorized
