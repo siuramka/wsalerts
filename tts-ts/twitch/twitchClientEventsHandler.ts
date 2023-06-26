@@ -4,15 +4,18 @@ import { TwitchSettingRepository } from "../database/repository/TwitchSetting/Tw
 import { CommandFactory } from "./factory/commandFactory";
 import { SettingsRepository } from "../database/repository/TwitchSetting/SettingsRepository";
 import { whitelistedCommands } from "./types/whitelistedCommands";
+import { TwitchAuthorizedUserRepository } from "../database/repository/TwitchSetting/TwitchAuthorizedUserRepository";
 
 export class TwitchClientEventsHandler {
   private _client: tmi.Client;
   private twitchSettingRepository: TwitchSettingRepository;
   private settinsRepository: SettingsRepository;
+  private twitchAuthorizedUserRepository: TwitchAuthorizedUserRepository
 
   async initialize(client: TwitchClient) {
     this._client = client.getTmiClient();
     this.twitchSettingRepository = new TwitchSettingRepository();
+    this.twitchAuthorizedUserRepository = new TwitchAuthorizedUserRepository();
     this.settinsRepository = new SettingsRepository();
     await this.setupChatListener();
   }
@@ -37,25 +40,34 @@ export class TwitchClientEventsHandler {
           (settings.muted || isDisabledMessage) &&
           !whitelistedCommands.includes(commandName)
         ) {
+          console.log("return:(")
           return;
         }
 
-        const twitchSetting = await this.twitchSettingRepository.getFirst();
+        const query = await this.twitchAuthorizedUserRepository?.getAuthorizedUsers();
+        const authorizedUsers = query.map(x => x.username.toLocaleLowerCase());
 
-        const authorizedUsers = twitchSetting?.twitchAuthorizedUsers.map(
-          (acc) => acc.username.toLocaleLowerCase()
-        );
+        console.log("aaaaaaa")
+
+        console.log(authorizedUsers)
         const isUserAuthorized = authorizedUsers?.includes(
           user.username.toLocaleLowerCase()
         );
+        console.log("isssss")
 
+        console.log(isUserAuthorized)
+
+        const twitchSetting = await this.twitchSettingRepository.getFirst();
         try {
           if (user.username === twitchSetting?.botUsername) {
             console.log(`${user.username}: ${message}`);
             commandName = "!BotCommand";
           }
+        console.log("wwwwwwww")
 
           if (isUserAuthorized) {
+        console.log("bbbbbbbbbb")
+
             const targetCommand = CommandFactory.getOperation(commandName);
             const returnMessage = await targetCommand?.parse(user, message);
 

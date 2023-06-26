@@ -40,7 +40,8 @@ const Callback = () => {
   if (user) {
     return <Navigate to="/" replace />;
   }
-
+  
+  return null;
 };
 
 export default Callback;

@@ -19,7 +19,6 @@ export class TwitchClient implements ITwitchClient {
   public async initialize() {
     this.twitchSettingRepository = new TwitchSettingRepository();
     const twitchSetting = await this.twitchSettingRepository.getFirst();
-
     const clientOptions: tmi.Options = {
       options: {
         debug: true,
@@ -31,7 +30,8 @@ export class TwitchClient implements ITwitchClient {
         username: twitchSetting?.botUsername,
         password: twitchSetting?.botOauth,
       },
-      channels: twitchSetting?.twitchAuthorizedUsers.map((x) => x.username),
+      channels: twitchSetting?.twitchAuthorizedUsers.map(x => x.username),
+      //only listen to one channel
     };
 
     this.options = clientOptions;
